@@ -142,7 +142,7 @@
         }
     },
     "signout": {
-        "get":{
+        "post":{
             "tags":[
                "auth"
             ],
@@ -150,7 +150,7 @@
             "description":"",
             "operationId":"signout",
             "consumes":[
-               "multipart/form-data"
+               "multipart/x-www-form-urlencoded"
             ],
             "produces":[
                "application/json"
@@ -158,7 +158,7 @@
             "parameters":[
                {
                   "name":"token",
-                  "in":"query",
+                  "in":"formData",
                   "description": "Enter your access token",
                   "type":"string",
                   "required": true

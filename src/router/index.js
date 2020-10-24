@@ -5,7 +5,7 @@ import BodyParser from 'body-parser';
 import Path from 'path';
 
 import HelloRoute from './hello_route';
-import AuthenticationRoute from './authentication_route';
+import AuthenticationRoute from './authenticationRoute';
 import PokemonRoute from './pokemonRoute';
 import PropertiesRoute from './propertiesRoute';
 import PokemonPropertiesRoute from './pokemonPropertiesRoute';

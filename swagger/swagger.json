@@ -2,7 +2,7 @@
     "swagger": "2.0",
     "info": {
         "version": "1.0.0",
-        "title": "Leaftee API",
+        "title": "Pokedex API",
         "description": "API document"
     },
     "host":"localhost:4000",
@@ -14,11 +14,11 @@
         },
         {
             "name": "auth",
-            "description": "Authentication API"
+            "description": "Authentication"
         },
         {
             "name": "pokemon",
-            "description": "Pokemon API"
+            "description": "Pokemon"
         },
         {
             "name": "properties",

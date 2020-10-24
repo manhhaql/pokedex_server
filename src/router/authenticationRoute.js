@@ -9,7 +9,7 @@ import Encryption from '../helper/encryption';
 
 import UserCore from '../core/userCore';
 import AuthenticationCore from '../core/authenticationCore';
-import RedisCore from '../core//redis/redisCore';
+import RedisCore from '../core/redis/redisCore';
 
 class AuthenticationRoute {
     constructor() {
@@ -160,7 +160,7 @@ class AuthenticationRoute {
     };
 
     signout(req, res, next) {
-        const {error: paramError, value: paramValues} = Joi.validate(req.query, Joi.object().keys({
+        const {error: paramError, value: paramValues} = Joi.validate(req.body, Joi.object().keys({
             token: Joi.string().required()
         }).unknown());
 
@@ -201,7 +201,7 @@ class AuthenticationRoute {
     routes() {
         this.router.post('/signup', this.signup.bind(this));
         this.router.post('/signin', this.signin.bind(this));
-        this.router.get('/signout', this.signout.bind(this));
+        this.router.post('/signout', this.signout.bind(this));
     };
 };
 
