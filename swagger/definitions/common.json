@@ -1,0 +1,10 @@
+{
+    "StatusCode": {
+        "type": "string",
+        "example": "SUCCESS"
+    },
+    "ErrorObject": {
+        "type": "string",
+        "example": "error message or object"
+    }
+}

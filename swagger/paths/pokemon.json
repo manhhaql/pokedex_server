@@ -1,0 +1,433 @@
+{
+    "list": {
+        "get": {
+            "tags": [
+                "pokemon"
+            ],
+            "summary": "List of pokemons",
+            "description": "",
+            "operationId": "list_pokemon",
+            "consumes": [
+                "multipart/form-data"
+            ],
+            "produces": [
+                "application/json"
+            ],
+            "parameters": [
+                {
+                    "name": "id",
+                    "in": "query",
+                    "description": "Pokemon id",
+                    "type": "integer",
+                    "format": "int32"
+                },
+                {
+                    "name": "name",
+                    "in": "query",
+                    "description": "Pokemon name",
+                    "required": false,
+                    "type": "string"
+                },
+                {
+                    "name": "type_id",
+                    "in": "query",
+                    "description": "Pokemon's type",
+                    "type": "integer",
+                    "format": "int32"
+                },
+                {
+                    "name": "weakness_id",
+                    "in": "query",
+                    "description": "Pokemon's weakness",
+                    "type": "integer",
+                    "format": "int32"
+                },
+                {
+                    "name": "ability_id",
+                    "in": "query",
+                    "description": "Pokemon's ability",
+                    "type": "integer",
+                    "format": "int32"
+                },
+                {
+                    "name": "page",
+                    "in": "query",
+                    "description": "page",
+                    "required": false,
+                    "type": "integer",
+                    "format": "int32"
+                },
+                {
+                    "name": "limit",
+                    "in": "query",
+                    "description": "limit, max 500",
+                    "required": false,
+                    "type": "integer",
+                    "format": "int32"
+                }
+            ],
+            "responses": {
+                "200": {
+                    "description": "OK",
+                    "schema": {
+                        "properties": {
+                            "code": {
+                                "$ref": "../definitions/common.json#/StatusCode"
+                            },
+                            "error": {
+                                "$ref": "../definitions/common.json#/ErrorObject"
+                            },
+                            "data": {
+                                "$ref": "#/definitions/Pokemons"
+                            }
+                        }
+                    }
+                },
+                "400": {
+                    "description": "Invalid input value"
+                },
+                "404": {
+                    "description": "Data not found"
+                }
+            }
+        }
+    },
+    "create": {
+        "post": {
+            "tags": [
+                "pokemon"
+            ],
+            "summary": "Create new pokemon",
+            "description": "",
+            "operationId": "create_pokemon",
+            "consumes": [
+                "application/x-www-form-urlencoded"
+            ],
+            "produces": [
+                "application/json"
+            ],
+            "parameters": [
+                {
+                    "name": "token",
+                    "in": "formData",
+                    "description": "Authentication token",
+                    "type": "string",
+                    "required": true
+                },
+                {
+                    "name": "name",
+                    "in": "formData",
+                    "description": "pokemon's name",
+                    "type": "string",
+                    "required": true
+                },
+                {
+                    "name": "stage",
+                    "in": "formData",
+                    "description": "pokemon's evolution stage, 1: lowest, 2: middle, 3: highest",
+                    "type": "integer",
+                    "format": "int32",
+                    "required": true
+                },
+                {
+                    "name": "of_first_stage",
+                    "in": "formData",
+                    "description": "Name of the first stage pokemon of this pokemon, leave empty if stage = 1",
+                    "type": "integer",
+                    "format": "int32",
+                    "required": false
+                },
+                {
+                    "name": "height",
+                    "in": "formData",
+                    "description": "height (inch)",
+                    "type": "integer",
+                    "format": "int32"
+                },
+                {
+                    "name": "weight",
+                    "in": "formData",
+                    "description": "weight (lbs)",
+                    "type": "integer",
+                    "format": "int32"
+                },
+                {
+                    "name": "gender",
+                    "in": "formData",
+                    "description": "For gender, 1: male, 2: female, 3: both",
+                    "type": "integer",
+                    "format": "int32"
+                }
+            ],
+            "responses": {
+                "200": {
+                    "description": "OK",
+                    "schema": {
+                        "properties": {
+                            "code": {
+                                "$ref": "../definitions/common.json#/StatusCode"
+                            },
+                            "error": {
+                                "$ref": "../definitions/common.json#/ErrorObject"
+                            },
+                            "data": {
+                                "$ref": "#/definitions/Pokemon"
+                            }
+                        }
+                    }
+                },
+                "400": {
+                    "description": "Invalid input value"
+                },
+                "404": {
+                    "description": "Data not found"
+                }
+            }
+        }
+    },
+    "update": {
+        "put": {
+            "tags": [
+                "pokemon"
+            ],
+            "summary": "Update existing pokemon",
+            "description": "",
+            "operationId": "update_pokemon",
+            "consumes": [
+                "application/x-www-form-urlencoded"
+            ],
+            "produces": [
+                "application/json"
+            ],
+            "parameters": [
+                {
+                    "name": "token",
+                    "in": "formData",
+                    "description": "Authentication token",
+                    "required": true,
+                    "type": "string"
+                },
+                {
+                    "name": "id",
+                    "in": "formData",
+                    "description": "pokemon's id need to be updated",
+                    "type": "integer",
+                    "format": "int32",
+                    "required": true
+                },
+                {
+                    "name": "name",
+                    "in": "formData",
+                    "description": "pokemon's name",
+                    "type": "string",
+                    "required": false
+                },
+                {
+                    "name": "stage",
+                    "in": "formData",
+                    "description": "pokemon's evolution stage, 1: lowest, 2: middle, 3: highest",
+                    "type": "integer",
+                    "format": "int32"
+                },
+                {
+                    "name": "of_first_stage",
+                    "in": "formData",
+                    "description": "Name of the first stage pokemon of this pokemon",
+                    "type": "integer",
+                    "format": "int32",
+                    "required": false
+                },
+                {
+                    "name": "height",
+                    "in": "formData",
+                    "description": "height (inch)",
+                    "type": "integer",
+                    "format": "int32"
+                },
+                {
+                    "name": "weight",
+                    "in": "formData",
+                    "description": "weight (lbs)",
+                    "type": "integer",
+                    "format": "int32"
+                },
+                {
+                    "name": "gender",
+                    "in": "formData",
+                    "description": "For gender, 1: male, 2: female, 3: both",
+                    "type": "integer",
+                    "format": "int32"
+                },
+                {
+                    "name": "status",
+                    "in": "formData",
+                    "description": "0: active, 1: inactive",
+                    "type": "integer",
+                    "format": "int32"
+                }
+            ],
+            "responses": {
+                "200": {
+                    "description": "OK",
+                    "schema": {
+                        "properties": {
+                            "code": {
+                                "$ref": "../definitions/common.json#/StatusCode"
+                            },
+                            "error": {
+                                "$ref": "../definitions/common.json#/ErrorObject"
+                            },
+                            "data": {
+                                "$ref": "#/definitions/Pokemon"
+                            }
+                        }
+                    }
+                },
+                "400": {
+                    "description": "Invalid input value"
+                },
+                "404": {
+                    "description": "Data not found"
+                }
+            }
+        }
+    },
+    "definitions": {
+        "Pokemons": {
+            "type": "array",
+            "items": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "name": "id",
+                        "type": "integer",
+                        "format": "int32",
+                        "example": "1"
+                    },
+                    "name": {
+                        "name": "name",
+                        "type": "string",
+                        "example": "pokemon's name"
+                    },
+                    "tag": {
+                        "name": "tag",
+                        "type": "string",
+                        "example": "pokemon's tag"
+                    },
+                    "stage": {
+                        "name": "stage",
+                        "type": "integer",
+                        "format": "int32",
+                        "example": "1"
+                    },
+                    "of_first_stage": {
+                        "name": "of_first_stage",
+                        "type": "integer",
+                        "format": "int32",
+                        "example": "1"
+                    },
+                    "height": {
+                        "name": "height",
+                        "type": "integer",
+                        "format": "int32",
+                        "example": "3"
+                    },
+                    "weight": {
+                        "name": "weight",
+                        "type": "integer",
+                        "format": "int32",
+                        "example": "3"
+                    },
+                    "gender": {
+                        "name": "gender",
+                        "type": "integer",
+                        "format": "int32",
+                        "example": "3"
+                    },
+                    "status": {
+                        "name": "status",
+                        "type": "integer",
+                        "format": "int32",
+                        "example": "0"
+                    },
+                    "created_at": {
+                        "name": "created_at",
+                        "type": "string",
+                        "example": "2020-01-01T10:00:00.000Z"
+                    },
+                    "updated_at": {
+                        "name": "updated_at",
+                        "type": "string",
+                        "example": "2020-01-01T00:00:00.000Z"
+                    }
+                }
+            }
+        },
+        "Pokemon": {
+            "properties": {
+                "id": {
+                    "name": "id",
+                    "type": "integer",
+                    "format": "int32",
+                    "example": "1"
+                },
+                "name": {
+                    "name": "name",
+                    "type": "string",
+                    "example": "pokemon's name"
+                },
+                "tag": {
+                    "name": "tag",
+                    "type": "string",
+                    "example": "pokemon's tag"
+                },
+                "stage": {
+                    "name": "stage",
+                    "type": "integer",
+                    "format": "int32",
+                    "example": "1"
+                },
+                "of_first_stage": {
+                    "name": "of_first_stage",
+                    "type": "integer",
+                    "format": "int32",
+                    "example": "1"
+                },
+                "height": {
+                    "name": "height",
+                    "type": "integer",
+                    "format": "int32",
+                    "example": "3"
+                },
+                "weight": {
+                    "name": "weight",
+                    "type": "integer",
+                    "format": "int32",
+                    "example": "3"
+                },
+                "gender": {
+                    "name": "gender",
+                    "type": "integer",
+                    "format": "int32",
+                    "example": "3"
+                },
+                "status": {
+                    "name": "status",
+                    "type": "integer",
+                    "format": "int32",
+                    "example": "0"
+                },
+                "created_at": {
+                    "name": "created_at",
+                    "type": "string",
+                    "example": "2020-01-01T10:00:00.000Z"
+                },
+                "updated_at": {
+                    "name": "updated_at",
+                    "type": "string",
+                    "example": "2020-01-01T00:00:00.000Z"
+                }
+            }
+        }
+    }
+}

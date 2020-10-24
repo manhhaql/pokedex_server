@@ -1,0 +1,123 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "version": "1.0.0",
+        "title": "Leaftee API",
+        "description": "API document"
+    },
+    "host":"localhost:4000",
+    "basePath": "/",
+    "tags": [
+        {
+            "name": "hello",
+            "description": "Initial API"
+        },
+        {
+            "name": "auth",
+            "description": "Authentication API"
+        },
+        {
+            "name": "pokemon",
+            "description": "Pokemon API"
+        },
+        {
+            "name": "properties",
+            "description": "Pokemon type, weakness, ability"
+        },
+        {
+            "name": "pokemon type",
+            "description": ""
+        },
+        {
+            "name": "pokemon weakness",
+            "description": ""
+        },
+        {
+            "name": "pokemon ability",
+            "description": ""
+        },
+        {
+            "name": "pokemon image",
+            "description": "Pokemon image API"
+        },
+        {
+            "name": "users",
+            "description": "users API"
+        }
+        
+    ],
+    "schemes": [
+        "http",
+        "https"
+    ],
+    "consumes": [
+        "application/json",
+        "application/x-www-form-urlencoded"
+    ],
+    "produces": [
+        "application/json",
+        "text/html"
+    ],
+    "paths": {
+        "/hello": {
+            "$ref":"paths/hello.json#/hello"
+        },
+        "/authentication/signup": {
+            "$ref":"paths/authentication.json#/signup"
+        },
+        "/authentication/signin": {
+            "$ref":"paths/authentication.json#/signin"
+        },
+        "/authentication/signout": {
+            "$ref":"paths/authentication.json#/signout"
+        },
+        "/pokemon/list": {
+            "$ref":"paths/pokemon.json#/list"
+        },
+        "/pokemon/create": {
+            "$ref":"paths/pokemon.json#/create"
+        },
+        "/pokemon/update": {
+            "$ref":"paths/pokemon.json#/update"
+        },
+        "/properties/weakness": {
+            "$ref":"paths/properties.json#/weakness"
+        },
+        "/properties/type": {
+            "$ref":"paths/properties.json#/type"
+        },
+        "/properties/ability": {
+            "$ref":"paths/properties.json#/ability"
+        },
+        "/pokemon-type/list": {
+            "$ref":"paths/pokemon_type.json#/list"
+        },
+        "/pokemon-type/set": {
+            "$ref":"paths/pokemon_type.json#/set"
+        },
+        "/pokemon-weakness/list": {
+            "$ref":"paths/pokemon_weakness.json#/list"
+        },
+        "/pokemon-weakness/set": {
+            "$ref":"paths/pokemon_weakness.json#/set"
+        },
+        "/pokemon-ability/list": {
+            "$ref":"paths/pokemon_ability.json#/list"
+        },
+        "/pokemon-ability/set": {
+            "$ref":"paths/pokemon_ability.json#/set"
+        },
+        "/pokemon-image/upload": {
+            "$ref":"paths/pokemon_img.json#/upload"
+        },
+        "/pokemon-image/update": {
+            "$ref":"paths/pokemon_img.json#/update"
+        },
+        "/pokemon-image/list": {
+            "$ref":"paths/pokemon_img.json#/list"
+        },
+        "/users/user-info": {
+            "$ref":"paths/users.json#/user-info"
+        }
+    }
+}

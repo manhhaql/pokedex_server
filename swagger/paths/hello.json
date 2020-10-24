@@ -1,0 +1,56 @@
+{
+    "hello": {
+        "get":{
+            "tags":[
+               "hello"
+            ],
+            "summary":"Initial API",
+            "description":"",
+            "operationId":"hello",
+            "consumes":[
+               "multipart/form-data"
+            ],
+            "produces":[
+               "application/json"
+            ],
+            "parameters":[
+               {
+                  "name":"name",
+                  "in":"query",
+                  "description": "Type in your name",
+                  "type":"string"
+               }
+            ],
+            "responses":{
+               "200":{
+                  "description":"OK",
+                  "schema":{
+                    "properties": {
+                        "code": {
+                            "$ref": "../definitions/common.json#/StatusCode"
+                        },
+                        "error": {
+                            "$ref": "../definitions/common.json#/ErrorObject"
+                        },
+                        "data": {
+                            "$ref": "#/definitions/Hello"
+                        }
+                    }
+                  }
+               },
+               "400":{
+                  "description":"Invalid input value"
+               },
+               "404":{
+                  "description":"Data not found"
+               }
+            }
+        }
+    },
+    "definitions": {
+        "Hello": {
+            "type": "string",
+            "example": "Hello Random name"
+        }
+    }
+}

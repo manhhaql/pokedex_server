@@ -1,0 +1,186 @@
+{
+    "list": {
+        "get": {
+            "tags": [
+                "pokemon weakness"
+            ],
+            "summary": "List of pokemon weakness",
+            "description": "",
+            "operationId": "list_pokemon_weakness",
+            "consumes": [
+                "multipart/form-data"
+            ],
+            "produces": [
+                "application/json"
+            ],
+            "parameters": [
+                {
+                    "name": "id",
+                    "in": "query",
+                    "description": "Pokemon id",
+                    "type": "integer",
+                    "format": "int32"
+                },
+                {
+                    "name": "pokemon_id",
+                    "in": "query",
+                    "description": "Pokemon's id",
+                    "type": "integer",
+                    "format": "int32"
+                },
+                {
+                    "name": "type_id",
+                    "in": "query",
+                    "description": "Pokemon's weakness",
+                    "type": "integer",
+                    "format": "int32"
+                },
+                {
+                    "name": "page",
+                    "in": "query",
+                    "description": "page",
+                    "required": false,
+                    "type": "integer",
+                    "format": "int32"
+                },
+                {
+                    "name": "limit",
+                    "in": "query",
+                    "description": "limit, max 500",
+                    "required": false,
+                    "type": "integer",
+                    "format": "int32"
+                }
+            ],
+            "responses": {
+                "200": {
+                    "description": "OK",
+                    "schema": {
+                        "properties": {
+                            "code": {
+                                "$ref": "../definitions/common.json#/StatusCode"
+                            },
+                            "error": {
+                                "$ref": "../definitions/common.json#/ErrorObject"
+                            },
+                            "data": {
+                                "$ref": "#/definitions/PokemonWeakness"
+                            }
+                        }
+                    }
+                },
+                "400": {
+                    "description": "Invalid input value"
+                },
+                "404": {
+                    "description": "Data not found"
+                }
+            }
+        }
+    },
+    "set": {
+        "post": {
+            "tags": [
+                "pokemon weakness"
+            ],
+            "summary": "Set pokemon weakness",
+            "description": "",
+            "operationId": "set_pokemon_weakness",
+            "consumes": [
+                "application/x-www-form-urlencoded"
+            ],
+            "produces": [
+                "application/json"
+            ],
+            "parameters": [
+                {
+                    "name": "token",
+                    "in": "formData",
+                    "description": "Authentication token",
+                    "type": "string",
+                    "required": true
+                },
+                {
+                    "name": "pokemon_id",
+                    "in": "formData",
+                    "description": "pokemon's id",
+                    "type": "integer",
+                    "format": "int32",
+                    "required": true
+                },
+                {
+                    "name": "weakness",
+                    "in": "formData",
+                    "description": "pokemon's weakness ids; example: [1, 2]",
+                    "type": "array",
+                    "required": true
+                }
+            ],
+            "responses": {
+                "200": {
+                    "description": "OK",
+                    "schema": {
+                        "properties": {
+                            "code": {
+                                "$ref": "../definitions/common.json#/StatusCode"
+                            },
+                            "error": {
+                                "$ref": "../definitions/common.json#/ErrorObject"
+                            },
+                            "data": {
+                                "$ref": "#/definitions/PokemonWeakness"
+                            }
+                        }
+                    }
+                },
+                "400": {
+                    "description": "Invalid input value"
+                },
+                "404": {
+                    "description": "Data not found"
+                }
+            }
+        }
+    },
+    "definitions": {
+        "PokemonWeakness": {
+            "type": "array",
+            "items": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "name": "id",
+                        "type": "integer",
+                        "format": "int32",
+                        "example": "1"
+                    },
+                    "pokemon_id": {
+                        "name": "pokemon_id",
+                        "type": "number",
+                        "example": "1"
+                    },
+                    "weakness_id": {
+                        "name": "weakness_id",
+                        "type": "number",
+                        "example": "1"
+                    },
+                    "weakness_name": {
+                        "name": "weakness_name",
+                        "type": "string",
+                        "example": "weakness"
+                    },
+                    "created_at": {
+                        "name": "created_at",
+                        "type": "string",
+                        "example": "2020-01-01T10:00:00.000Z"
+                    },
+                    "updated_at": {
+                        "name": "updated_at",
+                        "type": "string",
+                        "example": "2020-01-01T00:00:00.000Z"
+                    }
+                }
+            }
+        }
+    }
+}

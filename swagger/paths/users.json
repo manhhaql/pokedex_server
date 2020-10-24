@@ -1,0 +1,57 @@
+{
+    "user-info": {
+        "get":{
+            "tags":[
+               "users"
+            ],
+            "summary":"User API",
+            "description":"",
+            "operationId":"user-info",
+            "consumes":[
+               "multipart/form-data"
+            ],
+            "produces":[
+               "application/json"
+            ],
+            "parameters":[
+               {
+                  "name":"token",
+                  "in":"query",
+                  "description": "Authentication token",
+                  "type":"string",
+                  "required": true
+               }
+            ],
+            "responses":{
+               "200":{
+                  "description":"OK",
+                  "schema":{
+                    "properties": {
+                        "code": {
+                            "$ref": "../definitions/common.json#/StatusCode"
+                        },
+                        "error": {
+                            "$ref": "../definitions/common.json#/ErrorObject"
+                        },
+                        "data": {
+                            "$ref": "#/definitions/Hello"
+                        }
+                    }
+                  }
+               },
+               "400":{
+                  "description":"Invalid input value"
+               },
+               "404":{
+                  "description":"Data not found"
+               }
+            }
+        }
+    },
+    "definitions": {
+        "Hello": {
+            "type": "string",
+            "example": "Hello Random name"
+        }
+    }
+}

@@ -1,0 +1,186 @@
+{
+    "list": {
+        "get": {
+            "tags": [
+                "pokemon type"
+            ],
+            "summary": "List of pokemon types",
+            "description": "",
+            "operationId": "list_pokemon_type",
+            "consumes": [
+                "multipart/form-data"
+            ],
+            "produces": [
+                "application/json"
+            ],
+            "parameters": [
+                {
+                    "name": "id",
+                    "in": "query",
+                    "description": "Pokemon id",
+                    "type": "integer",
+                    "format": "int32"
+                },
+                {
+                    "name": "pokemon_id",
+                    "in": "query",
+                    "description": "Pokemon's id",
+                    "type": "integer",
+                    "format": "int32"
+                },
+                {
+                    "name": "type_id",
+                    "in": "query",
+                    "description": "Pokemon's type",
+                    "type": "integer",
+                    "format": "int32"
+                },
+                {
+                    "name": "page",
+                    "in": "query",
+                    "description": "page",
+                    "required": false,
+                    "type": "integer",
+                    "format": "int32"
+                },
+                {
+                    "name": "limit",
+                    "in": "query",
+                    "description": "limit, max 500",
+                    "required": false,
+                    "type": "integer",
+                    "format": "int32"
+                }
+            ],
+            "responses": {
+                "200": {
+                    "description": "OK",
+                    "schema": {
+                        "properties": {
+                            "code": {
+                                "$ref": "../definitions/common.json#/StatusCode"
+                            },
+                            "error": {
+                                "$ref": "../definitions/common.json#/ErrorObject"
+                            },
+                            "data": {
+                                "$ref": "#/definitions/PokemonTypes"
+                            }
+                        }
+                    }
+                },
+                "400": {
+                    "description": "Invalid input value"
+                },
+                "404": {
+                    "description": "Data not found"
+                }
+            }
+        }
+    },
+    "set": {
+        "post": {
+            "tags": [
+                "pokemon type"
+            ],
+            "summary": "Set pokemon types",
+            "description": "",
+            "operationId": "set_pokemon_types",
+            "consumes": [
+                "application/x-www-form-urlencoded"
+            ],
+            "produces": [
+                "application/json"
+            ],
+            "parameters": [
+                {
+                    "name": "token",
+                    "in": "formData",
+                    "description": "Authentication token",
+                    "type": "string",
+                    "required": true
+                },
+                {
+                    "name": "pokemon_id",
+                    "in": "formData",
+                    "description": "pokemon's id",
+                    "type": "integer",
+                    "format": "int32",
+                    "required": true
+                },
+                {
+                    "name": "types",
+                    "in": "formData",
+                    "description": "pokemon's types; example: [1, 2]",
+                    "type": "array",
+                    "required": true
+                }
+            ],
+            "responses": {
+                "200": {
+                    "description": "OK",
+                    "schema": {
+                        "properties": {
+                            "code": {
+                                "$ref": "../definitions/common.json#/StatusCode"
+                            },
+                            "error": {
+                                "$ref": "../definitions/common.json#/ErrorObject"
+                            },
+                            "data": {
+                                "$ref": "#/definitions/PokemonTypes"
+                            }
+                        }
+                    }
+                },
+                "400": {
+                    "description": "Invalid input value"
+                },
+                "404": {
+                    "description": "Data not found"
+                }
+            }
+        }
+    },
+    "definitions": {
+        "PokemonTypes": {
+            "type": "array",
+            "items": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "name": "id",
+                        "type": "integer",
+                        "format": "int32",
+                        "example": "1"
+                    },
+                    "pokemon_id": {
+                        "name": "pokemon_id",
+                        "type": "number",
+                        "example": "1"
+                    },
+                    "type_id": {
+                        "name": "type_id",
+                        "type": "number",
+                        "example": "1"
+                    },
+                    "type_name": {
+                        "name": "type_name",
+                        "type": "string",
+                        "example": "type"
+                    },
+                    "created_at": {
+                        "name": "created_at",
+                        "type": "string",
+                        "example": "2020-01-01T10:00:00.000Z"
+                    },
+                    "updated_at": {
+                        "name": "updated_at",
+                        "type": "string",
+                        "example": "2020-01-01T00:00:00.000Z"
+                    }
+                }
+            }
+        }
+    }
+}

@@ -1,0 +1,245 @@
+{
+    "upload": {
+        "post": {
+            "tags": [
+                "pokemon image"
+            ],
+            "summary": "Upload image API",
+            "description": "",
+            "operationId": "upload_image",
+            "consumes": [
+                "multipart/form-data"
+            ],
+            "produces": [
+                "application/json"
+            ],
+            "parameters": [
+                {
+                    "name": "token",
+                    "in": "formData",
+                    "description": "Authentication token",
+                    "required": true,
+                    "type": "string"
+                 },
+                {
+                    "name": "pokemon_id",
+                    "in": "formData",
+                    "description": "Pokemon ID",
+                    "type": "integer",
+                    "format": "int32",
+                    "required": true
+                },
+                {
+                    "name": "file",
+                    "in": "formData",
+                    "description": "File to upload",
+                    "type": "file"
+                }
+            ],
+            "responses": {
+                "200": {
+                    "description": "OK",
+                    "schema": {
+                        "properties": {
+                            "code": {
+                                "$ref": "../definitions/common.json#/StatusCode"
+                            },
+                            "error": {
+                                "$ref": "../definitions/common.json#/ErrorObject"
+                            },
+                            "data": {
+                                "$ref": "#/definitions/Upload"
+                            }
+                        }
+                    }
+                },
+                "400": {
+                    "description": "Invalid input value"
+                },
+                "404": {
+                    "description": "Data not found"
+                }
+            }
+        }
+    },
+    "update": {
+        "put": {
+            "tags": [
+                "pokemon image"
+            ],
+            "summary": "Update an existing pokemon image",
+            "description": "",
+            "operationId": "update_image",
+            "consumes": [
+                "multipart/form-data"
+            ],
+            "produces": [
+                "application/json"
+            ],
+            "parameters": [
+                {
+                    "name": "token",
+                    "in": "formData",
+                    "description": "Authentication token",
+                    "required": true,
+                    "type": "string"
+                 },
+                {
+                    "name": "pokemon_id",
+                    "in": "formData",
+                    "description": "Pokemon ID",
+                    "type": "integer",
+                    "format": "int32",
+                    "required": true
+                },
+                {
+                    "name": "file",
+                    "in": "formData",
+                    "description": "File image to upload",
+                    "type": "file"
+                }
+            ],
+            "responses": {
+                "200": {
+                    "description": "OK",
+                    "schema": {
+                        "properties": {
+                            "code": {
+                                "$ref": "../definitions/common.json#/StatusCode"
+                            },
+                            "error": {
+                                "$ref": "../definitions/common.json#/ErrorObject"
+                            },
+                            "data": {
+                                "$ref": "#/definitions/Upload"
+                            }
+                        }
+                    }
+                },
+                "400": {
+                    "description": "Invalid input value"
+                },
+                "404": {
+                    "description": "Data not found"
+                }
+            }
+        }
+    },
+    "list": {
+        "get": {
+            "tags": [
+                "pokemon image"
+            ],
+            "summary": "List of pokemon images",
+            "description": "",
+            "operationId": "pokemon_image",
+            "consumes": [
+                "multipart/form-data"
+            ],
+            "produces": [
+                "application/json"
+            ],
+            "parameters": [
+                {
+                    "name": "pokemon_id",
+                    "in": "query",
+                    "description": "Pokemon ID",
+                    "type": "integer",
+                    "format": "int32",
+                    "required": false
+                },
+                {
+                    "name": "page",
+                    "in": "query",
+                    "description": "page",
+                    "required": false,
+                    "type": "int32"
+                },
+                {
+                    "name": "limit",
+                    "in": "query",
+                    "description": "limit, max 500",
+                    "required": false,
+                    "type": "int32"
+                }
+            ],
+            "responses": {
+                "200": {
+                    "description": "OK",
+                    "schema": {
+                        "properties": {
+                            "code": {
+                                "$ref": "../definitions/common.json#/StatusCode"
+                            },
+                            "error": {
+                                "$ref": "../definitions/common.json#/ErrorObject"
+                            },
+                            "data": {
+                                "$ref": "#/definitions/List"
+                            }
+                        }
+                    }
+                },
+                "400": {
+                    "description": "Invalid input value"
+                },
+                "404": {
+                    "description": "Data not found"
+                }
+            }
+        }
+    },
+    "definitions": {
+        "Upload": {
+            "type": "object",
+            "properties": {
+                "pokemon_id": {
+                    "name": "pokemon_id",
+                    "type": "integer",
+                    "format": "int32",
+                    "example": 1
+                },
+                "url": {
+                    "name": "url",
+                    "type": "string",
+                    "example": "https://url/to/image.jpeg"
+                }
+            }
+        },
+        "List": {
+            "type": "array",
+            "items": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "name": "id",
+                        "type": "integer",
+                        "format": "int32",
+                        "example": 1
+                    },
+                    "pokemon_id": {
+                        "name": "pokemon_id",
+                        "type": "integer",
+                        "format": "int32",
+                        "example": 1
+                    },
+                    "url": {
+                        "name": "url",
+                        "type": "string",
+                        "example": "https://url/to/image.jpeg"
+                    },
+                    "created_at": {
+                        "name": "created_at",
+                        "type": "string",
+                        "example": "2020-01-01T10:00:00.000Z"
+                    },
+                    "updated_at": {
+                        "name": "updated_at",
+                        "type": "string",
+                        "example": "2020-01-01T00:00:00.000Z"
+                    }
+                }
+            }
+        }
+    }
+}

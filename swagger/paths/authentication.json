@@ -1,0 +1,250 @@
+{   
+    "signup": {
+        "post":{
+            "tags":[
+               "auth"
+            ],
+            "summary":"Signup API",
+            "description":"",
+            "operationId":"signup",
+            "consumes": [
+                "application/x-www-form-urlencoded"
+             ],
+            "produces":[
+               "application/json"
+            ],
+            "parameters":[
+               {
+                  "name":"type",
+                  "in":"formData",
+                  "description": "User type: 1-admin, 2-customer",
+                  "type":"integer",
+                  "format":"int32",
+                  "required": true
+               },
+               {
+                  "name":"phone",
+                  "in":"formData",
+                  "description": "Type in your phone number",
+                  "type":"integer",
+                  "format":"int32",
+                  "required": false
+               },
+               {
+                  "name":"email",
+                  "in":"formData",
+                  "description": "Type in your email",
+                  "type":"string",
+                  "required": false
+               },
+               {
+                  "name":"username",
+                  "in":"formData",
+                  "description": "Type in your username",
+                  "type":"string",
+                  "required": true
+               },
+               {
+                  "name":"password",
+                  "in":"formData",
+                  "description": "Type in your password",
+                  "type":"string",
+                  "required": true
+               },
+               {
+                  "name":"password_check",
+                  "in":"formData",
+                  "description": "Type in your password check",
+                  "type":"string",
+                  "required": true
+               }
+            ],
+            "responses":{
+               "200":{
+                  "description":"OK",
+                  "schema":{
+                    "properties": {
+                        "code": {
+                            "$ref": "../definitions/common.json#/StatusCode"
+                        },
+                        "error": {
+                            "$ref": "../definitions/common.json#/ErrorObject"
+                        },
+                        "data": {
+                            "$ref": "#/definitions/AuthenticationData"
+                        }
+                    }
+                  }
+               },
+               "400":{
+                  "description":"Invalid input value"
+               },
+               "404":{
+                  "description":"Data not found"
+               }
+            }
+        }
+    },
+    "signin": {
+        "post":{
+            "tags":[
+               "auth"
+            ],
+            "summary":"Signin API",
+            "description":"",
+            "operationId":"signin",
+            "consumes": [
+                "application/x-www-form-urlencoded"
+             ],
+            "produces":[
+               "application/json"
+            ],
+            "parameters":[
+               {
+                  "name":"username",
+                  "in":"formData",
+                  "description": "Type in your username",
+                  "type":"string",
+                  "required": true
+               },
+               {
+                  "name":"password",
+                  "in":"formData",
+                  "description": "Type in your password",
+                  "type":"string",
+                  "required": true
+               }
+            ],
+            "responses":{
+               "200":{
+                  "description":"OK",
+                  "schema":{
+                    "properties": {
+                        "code": {
+                            "$ref": "../definitions/common.json#/StatusCode"
+                        },
+                        "error": {
+                            "$ref": "../definitions/common.json#/ErrorObject"
+                        },
+                        "data": {
+                            "$ref": "#/definitions/AuthenticationData"
+                        }
+                    }
+                  }
+               },
+               "400":{
+                  "description":"Invalid input value"
+               },
+               "404":{
+                  "description":"Data not found"
+               }
+            }
+        }
+    },
+    "signout": {
+        "get":{
+            "tags":[
+               "auth"
+            ],
+            "summary":"Signout API",
+            "description":"",
+            "operationId":"signout",
+            "consumes":[
+               "multipart/form-data"
+            ],
+            "produces":[
+               "application/json"
+            ],
+            "parameters":[
+               {
+                  "name":"token",
+                  "in":"query",
+                  "description": "Enter your access token",
+                  "type":"string",
+                  "required": true
+               }
+            ],
+            "responses":{
+               "200":{
+                  "description":"OK",
+                  "schema":{
+                    "properties": {
+                        "code": {
+                            "$ref": "../definitions/common.json#/StatusCode"
+                        },
+                        "error": {
+                            "$ref": "../definitions/common.json#/ErrorObject"
+                        }
+                    }
+                  }
+               },
+               "400":{
+                  "description":"Invalid input value"
+               },
+               "404":{
+                  "description":"Data not found"
+               }
+            }
+        }
+    },
+    "definitions": {
+        "AuthenticationData": {
+            "type": "object",
+            "properties": {
+                "token": {
+                    "name": "token",
+                    "type":"string",
+                    "expamle": ""
+                },
+                "user":{
+                    "type": "object",
+                    "properties":{
+                        "id": {
+                            "name": "id",
+                            "type": "integer",
+                            "format": "int32",
+                            "example": "1"
+                        },
+                        "username": {
+                            "username": "username",
+                            "type": "string",
+                            "example": "user's name"
+                        },
+                        "password": {
+                            "name": "password",
+                            "type": "string",
+                            "example": ""
+                        },
+                        "salt": {
+                            "name": "salt",
+                            "type": "string",
+                            "example": ""
+                        },
+                        "type": {
+                            "name": "type",
+                            "type": "integer",
+                            "format": "int32",
+                            "example": "0"
+                        },
+                        "status": {
+                            "name": "status",
+                            "type": "integer",
+                            "format": "int32",
+                            "example": "0"
+                        },
+                        "created_at": {
+                            "name": "created_at",
+                            "type": "string",
+                            "example": "2020-01-01T10:00:00.000Z"
+                        },
+                        "updated_at": {
+                            "name": "updated_at",
+                            "type": "string",
+                            "example": "2020-01-01T00:00:00.000Z"
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

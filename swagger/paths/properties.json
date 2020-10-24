@@ -1,0 +1,213 @@
+{
+   "weakness": {
+      "get": {
+         "tags": [
+            "properties"
+         ],
+         "summary": "Get pokemon weakness",
+         "description": "",
+         "operationId": "wekness",
+         "consumes": [
+            "multipart/form-data"
+         ],
+         "produces": [
+            "application/json"
+         ],
+         "parameters": [
+            {
+               "name": "id",
+               "in": "query",
+               "description": "Weakness id",
+               "type": "integer",
+               "format": "int32"
+            }
+         ],
+         "responses": {
+            "200": {
+               "description": "OK",
+               "schema": {
+                  "properties": {
+                     "code": {
+                        "$ref": "../definitions/common.json#/StatusCode"
+                     },
+                     "error": {
+                        "$ref": "../definitions/common.json#/ErrorObject"
+                     },
+                     "data": {
+                        "$ref": "#/definitions/Weakness"
+                     }
+                  }
+               }
+            },
+            "400": {
+               "description": "Invalid input value"
+            },
+            "404": {
+               "description": "Data not found"
+            }
+         }
+      }
+   },
+   "type": {
+      "get": {
+         "tags": [
+            "properties"
+         ],
+         "summary": "Get pokemon types",
+         "description": "",
+         "operationId": "type",
+         "consumes": [
+            "multipart/form-data"
+         ],
+         "produces": [
+            "application/json"
+         ],
+         "parameters": [
+            {
+               "name": "id",
+               "in": "query",
+               "description": "Type id",
+               "type": "integer",
+               "format": "int32"
+            }
+         ],
+         "responses": {
+            "200": {
+               "description": "OK",
+               "schema": {
+                  "properties": {
+                     "code": {
+                        "$ref": "../definitions/common.json#/StatusCode"
+                     },
+                     "error": {
+                        "$ref": "../definitions/common.json#/ErrorObject"
+                     },
+                     "data": {
+                        "$ref": "#/definitions/Type"
+                     }
+                  }
+               }
+            },
+            "400": {
+               "description": "Invalid input value"
+            },
+            "404": {
+               "description": "Data not found"
+            }
+         }
+      }
+   },
+   "ability": {
+      "get": {
+         "tags": [
+            "properties"
+         ],
+         "summary": "Get pokemon ability",
+         "description": "",
+         "operationId": "ability",
+         "consumes": [
+            "multipart/form-data"
+         ],
+         "produces": [
+            "application/json"
+         ],
+         "parameters": [
+            {
+               "name": "id",
+               "in": "query",
+               "description": "Ability id",
+               "type": "integer",
+               "format": "int32"
+            }
+         ],
+         "responses": {
+            "200": {
+               "description": "OK",
+               "schema": {
+                  "properties": {
+                     "code": {
+                        "$ref": "../definitions/common.json#/StatusCode"
+                     },
+                     "error": {
+                        "$ref": "../definitions/common.json#/ErrorObject"
+                     },
+                     "data": {
+                        "$ref": "#/definitions/Ability"
+                     }
+                  }
+               }
+            },
+            "400": {
+               "description": "Invalid input value"
+            },
+            "404": {
+               "description": "Data not found"
+            }
+         }
+      }
+   },
+   "definitions": {
+      "Weakness": {
+         "type": "array",
+         "items": {
+            "type": "object",
+            "properties": {
+               "id": {
+                  "name": "id",
+                  "type": "integer",
+                  "format": "int32",
+                  "example": "1"
+               },
+               "name": {
+                  "name": "name",
+                  "type": "string",
+                  "example": "psychic"
+               }
+            }
+         }
+      },
+      "Type": {
+         "type": "array",
+         "items": {
+            "type": "object",
+            "properties": {
+               "id": {
+                  "name": "id",
+                  "type": "integer",
+                  "format": "int32",
+                  "example": "1"
+               },
+               "name": {
+                  "name": "name",
+                  "type": "string",
+                  "example": "fire"
+               }
+            }
+         }
+      },
+      "Ability": {
+         "type": "array",
+         "items": {
+            "type": "object",
+            "properties": {
+               "id": {
+                  "name": "id",
+                  "type": "integer",
+                  "format": "int32",
+                  "example": "1"
+               },
+               "name": {
+                  "name": "name",
+                  "type": "string",
+                  "example": "Water gun"
+               },
+               "description": {
+                  "name": "description",
+                  "type": "string",
+                  "example": "Fire water like a gun"
+               }
+            }
+         }
+      }
+   }
+}
