@@ -23,14 +23,6 @@
                   "required": true
                },
                {
-                  "name":"phone",
-                  "in":"formData",
-                  "description": "Type in your phone number",
-                  "type":"integer",
-                  "format":"int32",
-                  "required": false
-               },
-               {
                   "name":"email",
                   "in":"formData",
                   "description": "Type in your email",

@@ -26,7 +26,6 @@ class AuthenticationRoute {
     signup(req, res, next) {
         const {error: paramError, value: paramValues} = Joi.validate(req.body, Joi.object().keys({
             type: Joi.number().integer().valid(1, 2).required(),
-            phone: Joi.number().integer(),
             email: Joi.string(),
             username: Joi.string().regex(/^[a-zA-Z0-9, ]*$/).required(),
             password: Joi.string().required(),
@@ -65,7 +64,6 @@ class AuthenticationRoute {
 
             return this.userCore.create({
                 type: paramValues.type,
-                phone: paramValues.phone,
                 email: paramValues.email,
                 username: paramValues.username,
                 password: encryptedPassword,

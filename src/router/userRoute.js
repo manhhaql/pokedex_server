@@ -40,10 +40,10 @@ class UserRoute {
                 })
             }
 
-            responseData.token = paramValues.token;
+            responseData.token = result.token;
 
             return this.userCore.getBy({
-                id: result.user.id
+                user_id: result.user.id
             })
         }).then((result) => {
             if(!result.length) {

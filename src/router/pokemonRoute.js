@@ -11,6 +11,7 @@ import PokemonCore from '../core/pokemonCore';
 import PokemonTypeCore from '../core/pokemonTypeCore';
 import PokemonWeaknessCore from '../core/pokemonWeaknessCore';
 import PokemonAbilityCore from '../core/pokemonAbilityCore';
+import PokemonImageCore from '../core/pokemonImageCore';
 
 class PokemonRoute {
     constructor() {
@@ -20,6 +21,7 @@ class PokemonRoute {
         this.pokemonTypeCore = new PokemonTypeCore();
         this.pokemonWeaknessCore = new PokemonWeaknessCore();
         this.pokemonAbilityCore = new PokemonAbilityCore();
+        this.pokemonImageCore = new PokemonImageCore();
 
         this.router = Express.Router();
         this.routes();
@@ -40,13 +42,69 @@ class PokemonRoute {
             return res.status(400).json(ErrorParser.handleJoiError(paramError))
         }
 
+        let returnData;
+        let total;
+
         this.pokemonCore.get({
             id: paramValues.id,
-            name: paramValues.name
+            name: paramValues.name,
+            type_id: paramValues.type_id,
+            weakness_id: paramValues.weakness_id,
+            ability_id: paramValues.ability_id,
+            page: paramValues.page,
+            limit: paramValues.limit
+        }).then((result) => {
+            returnData = result
+            return Promise.all(returnData.map((data) => {
+                return Promise.all([
+                    this.pokemonTypeCore.get({
+                        pokemon_id: data.id
+                    }),
+                    this.pokemonWeaknessCore.get({
+                        pokemon_id: data.id
+                    }),
+                    this.pokemonAbilityCore.get({
+                        pokemon_id: data.id
+                    }),
+                    this.pokemonImageCore.get({
+                        pokemon_id: data.id
+                    })
+                ])
+            }))
+        }).then((result) => {
+            for(let i=0;i<result.length;i++) {
+                    returnData[i].types = result[i][0].map((type) => {
+                        return {
+                            type_id: type.type_id,
+                            type_name: type.type_name
+                        }
+                    })
+                    returnData[i].weakness = result[i][1].map((weakness) => {
+                        return {
+                            weakness_id: weakness.weakness_id,
+                            weakness_name: weakness.weakness_name
+                        }
+                    })
+                    returnData[i].abilities = result[i][2].map((ability) => {
+                        return {
+                            ability_id: ability.ability_id,
+                            ability_name: ability.ability_name
+                        }
+                    })
+                    returnData[i].image = result[i][3].map((image) => {
+                        console.log(image)
+                        return image.url
+                    })[0] || '';
+            }
+        }).then((result) => {
+            return this.pokemonCore.countTotal({})
+        }).then((result) => {
+            total = result[0].total
         }).then((result) => {
             return res.status(200).json({
                 code: responseCode.SUCCESS,
-                data: result
+                total: total,
+                data: returnData
             })
         }).catch((error) => {
             return res.status(400).json(error)

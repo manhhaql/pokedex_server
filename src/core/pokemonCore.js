@@ -22,10 +22,7 @@ class PokemonCore {
                 if (options.name !== undefined) {
                     whereData.push(options.name);
                 }
-                // let query = 'SELECT pokemon.id, pokemon.name, types.id as type_id, types.name as type_name, pokemon.tag, pokemon.height, pokemon.weight, pokemon.gender, pokemon.stage, pokemon.image, pokemon.created_at, pokemon.updated_at FROM pokemon';
-                let query = 'SELECT id, name, tag, stage, of_first_stage, height, weight, gender, status, created_at, updated_at FROM pokemon'
-                // query +=  ` LEFT JOIN pokemon_type on pokemon.id = pokemon_type.pokemon_id
-                //             LEFT JOIN types on pokemon_type.type_id = types.id`
+                let query = 'SELECT id, name, tag, stage, of_first_stage, height, weight, gender, status, created_at, updated_at FROM pokemon';
                 if (whereData.length) {
                     query += ' WHERE';
                     let includeAnd = false;
@@ -83,6 +80,29 @@ class PokemonCore {
                 connection.query(
                     query,
                     whereData.concat(options.limit !== undefined && options.page !== undefined ? [options.limit, (options.page - 1) * options.limit] : []),
+                    (error, result, fields)=>{
+                        connection.destroy();
+                        if(error) {
+                            return reject(ErrorParser.handleMysqlError(error))
+                        }
+                        resolve(result);
+                    }
+                )
+            });
+        });
+    };
+
+    countTotal(options) {
+        return new Promise((resolve, reject) => {
+            MysqlManager.pool.getConnection((error, connection) => {
+                if (error) {
+                    return reject(ErrorParser.handleMysqlError(error));
+                }
+                let query = 'SELECT COUNT(id) AS total FROM pokemon';
+
+                connection.query(
+                    query,
+                    options,
                     (error, result, fields)=>{
                         connection.destroy();
                         if(error) {
