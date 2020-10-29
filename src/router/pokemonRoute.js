@@ -92,7 +92,6 @@ class PokemonRoute {
                         }
                     })
                     returnData[i].image = result[i][3].map((image) => {
-                        console.log(image)
                         return image.url
                     })[0] || '';
             }
