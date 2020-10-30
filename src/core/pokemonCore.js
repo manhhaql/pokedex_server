@@ -22,16 +22,65 @@ class PokemonCore {
                 if (options.name !== undefined) {
                     whereData.push(options.name);
                 }
-                let query = 'SELECT id, name, tag, stage, of_first_stage, height, weight, gender, status, created_at, updated_at FROM pokemon';
+                if (options.type_id !== undefined) {
+                    whereData.push(options.type_id);
+                }
+                if (options.weakness_id !== undefined) {
+                    whereData.push(options.weakness_id);
+                }
+                if (options.asbility_id !== undefined) {
+                    whereData.push(options.asbility_id);
+                }
+                let query = `SELECT pokemon.id,
+                                    pokemon.name, 
+                                    pokemon.tag, 
+                                    pokemon.stage, 
+                                    pokemon.of_first_stage, 
+                                    pokemon.height, 
+                                    pokemon.weight, 
+                                    pokemon.gender, 
+                                    pokemon.status, 
+                                    (SELECT JSON_ARRAYAGG(pokemon_type.type_id) 
+                                        FROM pokemon_type 
+                                        WHERE pokemon_type.pokemon_id = pokemon.id
+                                        GROUP BY pokemon_type.pokemon_id) as types,
+                                    (SELECT JSON_ARRAYAGG(pokemon_weakness.weakness_id) 
+                                        FROM pokemon_weakness 
+                                        WHERE pokemon_weakness.pokemon_id = pokemon.id 
+                                        GROUP BY pokemon_weakness.pokemon_id) as weakness,
+                                    (SELECT JSON_ARRAYAGG(pokemon_ability.ability_id) 
+                                        FROM pokemon_ability 
+                                        WHERE pokemon_ability.pokemon_id = pokemon.id 
+                                        GROUP BY pokemon_ability.pokemon_id) as abilities,
+                                    (SELECT pokemon_image.url
+                                        FROM pokemon_image
+                                        WHERE pokemon_image.pokemon_id = pokemon.id 
+                                        GROUP BY pokemon_image.pokemon_id) as image,
+                                    pokemon.created_at, 
+                                    pokemon.updated_at
+                            FROM pokemon`;
+
                 if (whereData.length) {
-                    query += ' WHERE';
+                    // query += ' WHERE';
                     let includeAnd = false;
                     if (options.id !== undefined) {
-                        query += `${includeAnd ? ' AND' : ''} pokemon.id = ?`;
+                        query += ` WHERE ${includeAnd ? ' AND' : ''} pokemon.id = ?`;
                         includeAnd = true;
                     }
                     if (options.name !== undefined) {
-                        query += `${includeAnd ? ' AND' : ''} pokemon.name like "%"?"%"`;
+                        query += ` WHERE ${includeAnd ? ' AND' : ''} pokemon.name like "%"?"%"`;
+                        includeAnd = true;
+                    }
+                    if (options.type_id !== undefined) {
+                        query += ` LEFT JOIN pokemon_type on pokemon.id = pokemon_type.pokemon_id WHERE ${includeAnd ? ' AND' : ''} pokemon_type.type_id = ?`;
+                        includeAnd = true;
+                    }
+                    if (options.weakness_id !== undefined) {
+                        query += ` LEFT JOIN pokemon_weakness on pokemon.id = pokemon_weakness.pokemon_id WHERE ${includeAnd ? ' AND' : ''} pokemon_weakness.weakness_id = ?`;
+                        includeAnd = true;
+                    }
+                    if (options.ability_id !== undefined) {
+                        query += ` LEFT JOIN pokemon_ability on pokemon.id = pokemon_ability.pokemon_id WHERE ${includeAnd ? ' AND' : ''} pokemon_ability.ability_id = ?`;
                         includeAnd = true;
                     }
                 }

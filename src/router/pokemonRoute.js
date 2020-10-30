@@ -44,6 +44,9 @@ class PokemonRoute {
 
         let returnData;
         let total;
+        let pokemonTypes;
+        let pokemonWeakness;
+        let pokemonAbilities;
 
         this.pokemonCore.get({
             id: paramValues.id,
@@ -56,44 +59,16 @@ class PokemonRoute {
         }).then((result) => {
             returnData = result
             return Promise.all(returnData.map((data) => {
-                return Promise.all([
-                    this.pokemonTypeCore.get({
-                        pokemon_id: data.id
-                    }),
-                    this.pokemonWeaknessCore.get({
-                        pokemon_id: data.id
-                    }),
-                    this.pokemonAbilityCore.get({
-                        pokemon_id: data.id
-                    }),
-                    this.pokemonImageCore.get({
-                        pokemon_id: data.id
-                    })
-                ])
+                return this.pokemonCore.get({
+                    id: data.of_first_stage
+                })
             }))
         }).then((result) => {
             for(let i=0;i<result.length;i++) {
-                    returnData[i].types = result[i][0].map((type) => {
-                        return {
-                            type_id: type.type_id,
-                            type_name: type.type_name
-                        }
-                    })
-                    returnData[i].weakness = result[i][1].map((weakness) => {
-                        return {
-                            weakness_id: weakness.weakness_id,
-                            weakness_name: weakness.weakness_name
-                        }
-                    })
-                    returnData[i].abilities = result[i][2].map((ability) => {
-                        return {
-                            ability_id: ability.ability_id,
-                            ability_name: ability.ability_name
-                        }
-                    })
-                    returnData[i].image = result[i][3].map((image) => {
-                        return image.url
-                    })[0] || '';
+                returnData[i].of_first_stage = result[i][0] ? {
+                    id: result[i][0].id,
+                    name: result[i][0].name
+                } : null;
             }
         }).then((result) => {
             return this.pokemonCore.countTotal({})
