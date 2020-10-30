@@ -28,8 +28,8 @@ class PokemonCore {
                 if (options.weakness_id !== undefined) {
                     whereData.push(options.weakness_id);
                 }
-                if (options.asbility_id !== undefined) {
-                    whereData.push(options.asbility_id);
+                if (options.ability_id !== undefined) {
+                    whereData.push(options.ability_id);
                 }
                 let query = `SELECT pokemon.id,
                                     pokemon.name, 
@@ -59,35 +59,41 @@ class PokemonCore {
                                     pokemon.created_at, 
                                     pokemon.updated_at
                             FROM pokemon`;
+                        query += ` LEFT JOIN pokemon_type on pokemon.id = pokemon_type.pokemon_id
+                                    LEFT JOIN pokemon_weakness on pokemon.id = pokemon_weakness.pokemon_id
+                                    LEFT JOIN pokemon_ability on pokemon.id = pokemon_ability.pokemon_id`
 
                 if (whereData.length) {
-                    // query += ' WHERE';
+                    query += ' WHERE';
                     let includeAnd = false;
                     if (options.id !== undefined) {
-                        query += ` WHERE ${includeAnd ? ' AND' : ''} pokemon.id = ?`;
+                        query += `${includeAnd ? ' AND' : ''} pokemon.id = ?`;
                         includeAnd = true;
                     }
                     if (options.name !== undefined) {
-                        query += ` WHERE ${includeAnd ? ' AND' : ''} pokemon.name like "%"?"%"`;
+                        query += `${includeAnd ? ' AND' : ''} pokemon.name like "%"?"%"`;
                         includeAnd = true;
                     }
                     if (options.type_id !== undefined) {
-                        query += ` LEFT JOIN pokemon_type on pokemon.id = pokemon_type.pokemon_id WHERE ${includeAnd ? ' AND' : ''} pokemon_type.type_id = ?`;
+                        query += `${includeAnd ? ' AND' : ''} pokemon_type.type_id = ?`;
                         includeAnd = true;
                     }
                     if (options.weakness_id !== undefined) {
-                        query += ` LEFT JOIN pokemon_weakness on pokemon.id = pokemon_weakness.pokemon_id WHERE ${includeAnd ? ' AND' : ''} pokemon_weakness.weakness_id = ?`;
+                        query += `${includeAnd ? ' AND' : ''} pokemon_weakness.weakness_id = ?`;
                         includeAnd = true;
                     }
                     if (options.ability_id !== undefined) {
-                        query += ` LEFT JOIN pokemon_ability on pokemon.id = pokemon_ability.pokemon_id WHERE ${includeAnd ? ' AND' : ''} pokemon_ability.ability_id = ?`;
+                        query += `${includeAnd ? ' AND' : ''} pokemon_ability.ability_id = ?`;
                         includeAnd = true;
                     }
                 }
+
+                query += ` GROUP BY pokemon.id`
 
                 if(options.limit !== undefined && options.page !== undefined) {
                     query += ' LIMIT ? OFFSET ?'
                 }
+                
                 connection.query(
                     query,
                     whereData.concat(options.limit !== undefined && options.page !== undefined ? [options.limit, (options.page - 1) * options.limit] : []),
