@@ -61,11 +61,25 @@ class PokemonImageRoute {
     };
 
     upload(req, res, next) {
+        const authorizationToken = req.headers.authorization ? req.headers.authorization.replace("Bearer ", "") : '';
+        
+        if(!authorizationToken) {
+            return  res.status(400).json(ErrorParser.handleAuthenticationError("Authorization token is missing"))
+        }
 
-        const { error: paramError, value: paramValues } = Joi.validate(req.body, Joi.object().keys({
-            token: Joi.string().required(),
-            pokemon_id: Joi.number().integer().required()
-        }).unknown());
+        const {error: paramError, value: paramValues} = Joi.validate(
+            {
+                token: authorizationToken,
+                value: req.body
+                
+            }, 
+            {
+                token: Joi.string().required(),
+                value: Joi.object().keys({
+                    pokemon_id: Joi.number().integer().min(1).required()
+                }).unknown()
+            }
+        );
 
         if(paramError) {
             return res.status(400).json(ErrorParser.handleJoiError(paramError))
@@ -165,11 +179,25 @@ class PokemonImageRoute {
     };
 
     update(req, res, next) {
+        const authorizationToken = req.headers.authorization ? req.headers.authorization.replace("Bearer ", "") : '';
+        
+        if(!authorizationToken) {
+            return  res.status(400).json(ErrorParser.handleAuthenticationError("Authorization token is missing"))
+        }
 
-        const { error: paramError, value: paramValues } = Joi.validate(req.body, Joi.object().keys({
-            token: Joi.string().required(),
-            pokemon_id: Joi.number().integer().required()
-        }).unknown());
+        const {error: paramError, value: paramValues} = Joi.validate(
+            {
+                token: authorizationToken,
+                value: req.body
+                
+            }, 
+            {
+                token: Joi.string().required(),
+                value: Joi.object().keys({
+                    pokemon_id: Joi.number().integer().min(1).required()
+                }).unknown()
+            }
+        );
 
         if(paramError) {
             return res.status(400).json(ErrorParser.handleJoiError(paramError))
@@ -229,7 +257,7 @@ class PokemonImageRoute {
             }
 
             return this.pokemonImageCore.get({
-                pokemon_id: paramValues.pokemon_id
+                pokemon_id: paramValues.value.pokemon_id
             })
         }).then((result)=>{
             if (!result.length) {
@@ -241,13 +269,13 @@ class PokemonImageRoute {
                 });
             }
 
-            return uploadImageToStorage(selectedFile, paramValues.pokemon_id)
+            return uploadImageToStorage(selectedFile, paramValues.value.pokemon_id)
         }).then((result)=>{
 
             url = result;
             return new Promise((resolve, reject)=>{
                 this.pokemonImageCore.update({
-                    pokemon_id: paramValues.pokemon_id,
+                    pokemon_id: paramValues.value.pokemon_id,
                     values: {url: url}
                 }).then((result)=>{
                     resolve(result)
@@ -259,7 +287,7 @@ class PokemonImageRoute {
             return res.status(200).json({
                 code: responseCode.SUCCESS,
                 data: {
-                    pokemon_id: paramValues.pokemon_id,
+                    pokemon_id: paramValues.value.pokemon_id,
                     url: url
                 }
             });

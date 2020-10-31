@@ -44,9 +44,6 @@ class PokemonRoute {
 
         let returnData;
         let total;
-        let pokemonTypes;
-        let pokemonWeakness;
-        let pokemonAbilities;
 
         this.pokemonCore.get({
             id: paramValues.id,
@@ -60,12 +57,12 @@ class PokemonRoute {
             returnData = result
             return Promise.all(returnData.map((data) => {
                 return this.pokemonCore.get({
-                    id: data.of_first_stage
+                    id: data.of_basic
                 })
             }))
         }).then((result) => {
             for(let i=0;i<result.length;i++) {
-                returnData[i].of_first_stage = result[i][0] ? {
+                returnData[i].of_basic = result[i][0] ? {
                     id: result[i][0].id,
                     name: result[i][0].name
                 } : null;
@@ -89,8 +86,8 @@ class PokemonRoute {
         const {error: paramError, value: paramValues} = Joi.validate(req.body, Joi.object().keys({
             token: Joi.string().required(),
             name: Joi.string().regex(/[a-zA-Z]/).required(),
-            stage: Joi.number().integer().valid(1, 2, 3).required(),
-            of_first_stage: Joi.number().integer(),
+            stage: Joi.number().integer().valid(0, 1, 2, 3).required(),
+            of_basic: Joi.number().integer(),
             height: Joi.number().integer(),
             weight: Joi.number().integer(),
             gender: Joi.number().integer().valid(1, 2, 3),
@@ -102,7 +99,7 @@ class PokemonRoute {
         
         let returnData;
         let tag;
-        let ofFirstStage;
+        let ofBasic;
         let newCreatedId;
 
         this.redisCore.getRedisToken({
@@ -150,7 +147,7 @@ class PokemonRoute {
                     })
                 })
             }
-            if(paramValues.stage === dataConstant.STAGE_ONE) {
+            if(paramValues.stage === dataConstant.STAGE_BASIC) {
                 return new Promise((resolve, reject) => {
                     this.pokemonCore.create({
                         name: paramValues.name,
@@ -160,13 +157,13 @@ class PokemonRoute {
                         gender: paramValues.gender ? paramValues.gender : dataConstant.GENDER_BOTH
                     }).then(result => {
                         tag = result.insertId
-                        ofFirstStage = result.insertId
+                        ofBasic = result.insertId
                         newCreatedId = result.insertId
                         return this.pokemonCore.update({
                             id: result.insertId,
                             values: {
                                 tag: tag,
-                                of_first_stage: ofFirstStage,
+                                of_basic: ofBasic,
                             }
                         })
                     }).then(result => {
@@ -177,40 +174,40 @@ class PokemonRoute {
                 })
             }
             return new Promise((resolve, reject) => {
-                if(!paramValues.of_first_stage) {
+                if(!paramValues.of_basic) {
                     return reject({
                         code: responseCode.ERROR,
-                        error: `of_first_stage cannot be empty if stage = ${paramValues.stage}`
+                        error: `of_basic cannot be empty if stage = ${paramValues.stage}`
                     })
                 }
                 this.pokemonCore.get({
-                    id: paramValues.of_first_stage
+                    id: paramValues.of_basic
                 }).then(result => {
                     if(!result.length) {
                         return new Promise((resolve, reject) => {
                             return reject({
                                 code: responseCode.ERR_DATA_NOT_FOUND,
-                                error: `Pokemon of_first_stage '${paramValues.of_first_stage}' not found`
+                                error: `Pokemon of_basic '${paramValues.of_basic}' not found`
                             })
 
                         })
                     }
 
-                    if(result.length && result[0].stage !== dataConstant.STAGE_ONE) {
+                    if(result.length && result[0].stage !== dataConstant.STAGE_BASIC) {
                         return new Promise((resolve, reject) => {
                             return reject({
                                 code: responseCode.ERR_DATA_NOT_FOUND,
-                                error: `of_first_stage '${paramValues.of_first_stage}' given is not first stage pokemon`
+                                error: `of_basic '${paramValues.of_basic}' given is not basic pokemon`
                             })
                         })
                     }
 
                     tag = result[0].tag
-                    ofFirstStage = paramValues.of_first_stage
+                    ofBasic = paramValues.of_basic
                     return this.pokemonCore.create({
                         name: paramValues.name,
                         stage: paramValues.stage,
-                        of_first_stage: ofFirstStage,
+                        of_basic: ofBasic,
                         tag: tag,
                         height: paramValues.height,
                         weight: paramValues.weight,
@@ -249,8 +246,8 @@ class PokemonRoute {
             token: Joi.string().required(),
             id: Joi.number().integer().required(),
             name: Joi.string().regex(/[a-zA-Z]/),
-            stage: Joi.number().integer().valid(1, 2, 3),
-            of_first_stage: Joi.number().integer(),
+            stage: Joi.number().integer().valid(0, 1, 2, 3),
+            of_basic: Joi.number().integer(),
             height: Joi.number().integer(),
             weight: Joi.number().integer(),
             gender: Joi.number().integer().valid(1, 2, 3),
@@ -338,37 +335,37 @@ class PokemonRoute {
                 })
             }
 
-            if(values.stage === dataConstant.STAGE_ONE) {
-                if(paramValues.of_first_stage && paramValues.of_first_stage !== paramValues.id) {
+            if(values.stage === dataConstant.STAGE_BASIC) {
+                if(paramValues.of_basic && paramValues.of_basic !== paramValues.id) {
                     return new Promise((resolve, reject) => {
                         return reject({
                             code: responseCode.ERROR,
-                            error: `Pokemon id = ${paramValues.id} currently have stage = ${values.stage}, of_first_stage must be leave empty or equal to ${paramValues.id}`
+                            error: `Pokemon id = ${paramValues.id} currently have stage = ${values.stage}, of_basic must be leave empty or equal to ${paramValues.id}`
                         })
                     })
                 }
-                values.of_first_stage = paramValues.id
+                values.of_basic = paramValues.id
                 values.tag = paramValues.id
             }
-            if(values.stage !== dataConstant.STAGE_ONE) {
-                if(!paramValues.of_first_stage) {
+            if(values.stage !== dataConstant.STAGE_BASIC) {
+                if(!paramValues.of_basic) {
                     return new Promise((resolve, reject) => {
                         return reject({
                             code: responseCode.ERROR,
-                            error: `of_first_stage cannot be empty if stage = ${paramValues.stage}`
+                            error: `of_basic cannot be empty if stage = ${paramValues.stage}`
                         })
                     })
                 }
 
                 return new Promise((resolve, reject)=>{
                     this.pokemonCore.get({
-                        id: paramValues.of_first_stage
+                        id: paramValues.of_basic
                     }).then(result=>{
                         if(!result.length) {
                             return new Promise((resolve, reject) => {
                                 return reject({
                                     code: responseCode.ERR_DATA_NOT_FOUND,
-                                    error: `Pokemon of_first_stage '${paramValues.of_first_stage}' not found`
+                                    error: `Pokemon of_basic '${paramValues.of_basic}' not found`
                                 })
                             })
                         }
@@ -377,12 +374,12 @@ class PokemonRoute {
                             return new Promise((resolve, reject) => {
                                 return reject({
                                     code: responseCode.ERR_DATA_NOT_FOUND,
-                                    error: `of_first_stage '${paramValues.of_first_stage}' given is not first stage pokemon`
+                                    error: `of_basic '${paramValues.of_basic}' given is not basic pokemon`
                                 })
                             })
                         }
-                        values.of_first_stage = paramValues.of_first_stage;
-                        values.tag = paramValues.of_first_stage;
+                        values.of_basic = paramValues.of_basic;
+                        values.tag = paramValues.of_basic;
                         resolve(result)
                     }).catch(error=>{
                         reject(error)

@@ -19,6 +19,12 @@ class ErrorParser {
             error: error
         };
     };
+    static handleAuthenticationError(error) {
+        return {
+            code: responseCode.ERROR_AUTHENTICATION,
+            error: error
+        };
+    };
 };
 
 export default ErrorParser;

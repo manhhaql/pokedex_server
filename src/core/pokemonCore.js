@@ -35,7 +35,7 @@ class PokemonCore {
                                     pokemon.name, 
                                     pokemon.tag, 
                                     pokemon.stage, 
-                                    pokemon.of_first_stage, 
+                                    pokemon.of_basic, 
                                     pokemon.height, 
                                     pokemon.weight, 
                                     pokemon.gender, 
@@ -119,7 +119,7 @@ class PokemonCore {
                 if (options.name !== undefined) {
                     whereData.push(options.name);
                 }
-                let query = 'SELECT id, name, tag, stage, of_first_stage, height, weight, gender, status, created_at, updated_at FROM pokemon';
+                let query = 'SELECT id, name, tag, stage, of_basic, height, weight, gender, status, created_at, updated_at FROM pokemon';
                 if (whereData.length) {
                     query += ' WHERE';
                     let includeAnd = false;

@@ -49,15 +49,32 @@ class PokemonTypeRoute {
     };
 
     set(req, res, next) {
-        const {error: paramError, value: paramValues} = Joi.validate(req.body, Joi.object().keys({
-            token: Joi.string().required(),
-            pokemon_id: Joi.number().integer().min(1).required(),
-            types: Joi.array().items(Joi.number().integer())
-        }).unknown());
+        const authorizationToken = req.headers.authorization ? req.headers.authorization.replace("Bearer ", "") : '';
+
+        if(!authorizationToken) {
+            return  res.status(400).json(ErrorParser.handleAuthenticationError("Authorization token is missing"))
+        }
+
+        const {error: paramError, value: paramValues} = Joi.validate(
+            {
+                token: authorizationToken,
+                value: req.body
+                
+            }, 
+            {
+                token: Joi.string().required(),
+                value: Joi.object().keys(
+                    {
+                        pokemon_id: Joi.number().integer().min(1).required(),
+                        types: Joi.array().items(Joi.number().integer())
+                    }
+                ).unknown()
+            }
+        );
         
         let returnData;
         let typeData;
-        let setTypeData = paramValues.types;
+        let setTypeData = paramValues.value.types;
         let differents = [];
 
         if(paramError) {
@@ -115,13 +132,13 @@ class PokemonTypeRoute {
             }
         }).then(result => {
             return this.pokemonTypeCore.delete({
-                pokemon_id: paramValues.pokemon_id
+                pokemon_id: paramValues.value.pokemon_id
             })
         }).then(results => {
-            return Promise.all(paramValues.types.map((type_id)=>{
+            return Promise.all(paramValues.value.types.map((type_id)=>{
                 return new Promise((resolve, reject)=>{
                     this.pokemonTypeCore.set({
-                        pokemon_id: paramValues.pokemon_id,
+                        pokemon_id: paramValues.value.pokemon_id,
                         type_id: type_id
                     }).then((result)=>{
                         resolve(result)
@@ -133,7 +150,7 @@ class PokemonTypeRoute {
         }).then(result=>{
             return new Promise((resolve, reject) => {
                 this.pokemonTypeCore.get({
-                    pokemon_id: paramValues.pokemon_id
+                    pokemon_id: paramValues.value.pokemon_id
                 }).then(result => {
                     resolve(result)
                 }).catch(error => {
@@ -147,7 +164,6 @@ class PokemonTypeRoute {
                 data: returnData
             })
         }).catch(error=>{
-            console.log(error)
             return res.status(400).json(error)
         })
     };

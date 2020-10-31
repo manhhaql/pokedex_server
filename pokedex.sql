@@ -160,7 +160,7 @@ create table if not exists pokemon (
     name varchar(50) collate utf8_unicode_ci not null unique,
     tag varchar(50) collate utf8_unicode_ci not null,
 	stage tinyint not null default 1,
-	of_first_stage int default null,
+	of_basic int default null,
 	height int default null,
 	weight int default null,
     gender int default 3,

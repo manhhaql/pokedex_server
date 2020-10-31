@@ -13,14 +13,10 @@
             "produces": [
                 "application/json"
             ],
+            "security": {
+                "Bearer": []
+            },
             "parameters": [
-                {
-                    "name": "token",
-                    "in": "formData",
-                    "description": "Authentication token",
-                    "required": true,
-                    "type": "string"
-                 },
                 {
                     "name": "pokemon_id",
                     "in": "formData",
@@ -76,14 +72,10 @@
             "produces": [
                 "application/json"
             ],
+            "security": {
+                "Bearer": []
+            },
             "parameters": [
-                {
-                    "name": "token",
-                    "in": "formData",
-                    "description": "Authentication token",
-                    "required": true,
-                    "type": "string"
-                 },
                 {
                     "name": "pokemon_id",
                     "in": "formData",

@@ -13,15 +13,10 @@
             "produces":[
                "application/json"
             ],
-            "parameters":[
-               {
-                  "name":"token",
-                  "in":"query",
-                  "description": "Authentication token",
-                  "type":"string",
-                  "required": true
-               }
-            ],
+            "security": {
+                "Bearer": []
+            },
+            "parameters":[],
             "responses":{
                "200":{
                   "description":"OK",

@@ -124,15 +124,15 @@
                 {
                     "name": "stage",
                     "in": "formData",
-                    "description": "pokemon's evolution stage, 1: lowest, 2: middle, 3: highest",
+                    "description": "pokemon's evolution stage, 0: basic, 1: stage one, 2: stage two, 3: mega",
                     "type": "integer",
                     "format": "int32",
                     "required": true
                 },
                 {
-                    "name": "of_first_stage",
+                    "name": "of_basic",
                     "in": "formData",
-                    "description": "Name of the first stage pokemon of this pokemon, leave empty if stage = 1",
+                    "description": "Name of the basic pokemon of this pokemon, leave empty if stage = 1",
                     "type": "integer",
                     "format": "int32",
                     "required": false
@@ -225,14 +225,14 @@
                 {
                     "name": "stage",
                     "in": "formData",
-                    "description": "pokemon's evolution stage, 1: lowest, 2: middle, 3: highest",
+                    "description": "pokemon's evolution 0: basic, 1: stage one, 2: stage two, 3: mega",
                     "type": "integer",
                     "format": "int32"
                 },
                 {
-                    "name": "of_first_stage",
+                    "name": "of_basic",
                     "in": "formData",
-                    "description": "Name of the first stage pokemon of this pokemon",
+                    "description": "Name of the basic pokemon of this pokemon",
                     "type": "integer",
                     "format": "int32",
                     "required": false
@@ -320,8 +320,8 @@
                         "format": "int32",
                         "example": "1"
                     },
-                    "of_first_stage": {
-                        "name": "of_first_stage",
+                    "of_basic": {
+                        "name": "of_basic",
                         "type": "integer",
                         "format": "int32",
                         "example": "1"
@@ -387,8 +387,8 @@
                     "format": "int32",
                     "example": "1"
                 },
-                "of_first_stage": {
-                    "name": "of_first_stage",
+                "of_basic": {
+                    "name": "of_basic",
                     "type": "integer",
                     "format": "int32",
                     "example": "1"

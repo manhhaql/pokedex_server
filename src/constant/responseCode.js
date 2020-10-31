@@ -4,6 +4,7 @@ export const ERROR= "ERROR";
 export const ERR_VALIDATION = "ERR_VALIDATION";
 export const ERR_MYSQL = "ERR_MYSQL";
 export const ERR_REDIS = "ERR_REDIS";
+export const ERROR_AUTHENTICATION = "ERROR_AUTHENTICATION";
 
 export const ERR_DATA_NOT_FOUND = "ERR_DATA_NOT_FOUND";
 export const ERR_DATA_EXISTS = "ERR_DATA_EXISTS";

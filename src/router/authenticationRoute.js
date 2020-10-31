@@ -158,9 +158,20 @@ class AuthenticationRoute {
     };
 
     signout(req, res, next) {
-        const {error: paramError, value: paramValues} = Joi.validate(req.body, Joi.object().keys({
-            token: Joi.string().required()
-        }).unknown());
+        const authorizationToken = req.headers.authorization ? req.headers.authorization.replace("Bearer ", "") : '';
+        
+        if(!authorizationToken) {
+            return  res.status(400).json(ErrorParser.handleAuthenticationError("Authorization token is missing"))
+        }
+
+        const {error: paramError, value: paramValues} = Joi.validate(
+            {
+                token: authorizationToken
+            }, 
+            {
+                token: Joi.string().required()
+            }
+        );
 
         if(paramError) {
             return res.status(400).json(ErrorParser.handleJoiError(paramError));

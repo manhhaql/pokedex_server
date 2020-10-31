@@ -49,15 +49,32 @@ class PokemonWeaknessRoute {
     };
 
     set(req, res, next) {
-        const {error: paramError, value: paramValues} = Joi.validate(req.body, Joi.object().keys({
-            token: Joi.string().required(),
-            pokemon_id: Joi.number().integer().min(1).required(),
-            weakness: Joi.array().items(Joi.number().integer())
-        }).unknown());
+        const authorizationToken = req.headers.authorization ? req.headers.authorization.replace("Bearer ", "") : '';
+        
+        if(!authorizationToken) {
+            return  res.status(400).json(ErrorParser.handleAuthenticationError("Authorization token is missing"))
+        }
+
+        const {error: paramError, value: paramValues} = Joi.validate(
+            {
+                token: authorizationToken,
+                value: req.body
+                
+            }, 
+            {
+                token: Joi.string().required(),
+                value: Joi.object().keys(
+                    {
+                        pokemon_id: Joi.number().integer().min(1).required(),
+                        weakness: Joi.array().items(Joi.number().integer())
+                    }
+                ).unknown()
+            }
+        );
         
         let returnData;
         let weaknessData;
-        let setWeaknessData = paramValues.weakness;
+        let setWeaknessData = paramValues.value.weakness;
         let differents = [];
 
         if(paramError) {
@@ -112,13 +129,13 @@ class PokemonWeaknessRoute {
             }
         }).then(result => {
             return this.pokemonWeaknessCore.delete({
-                pokemon_id: paramValues.pokemon_id
+                pokemon_id: paramValues.value.pokemon_id
             })
         }).then(results => {
             return Promise.all(weaknessData.map((weakness_id)=>{
                 return new Promise((resolve, reject)=>{
                     this.pokemonWeaknessCore.set({
-                        pokemon_id: paramValues.pokemon_id,
+                        pokemon_id: paramValues.value.pokemon_id,
                         weakness_id: weakness_id
                     }).then((result)=>{
                         resolve(result)
@@ -130,7 +147,7 @@ class PokemonWeaknessRoute {
         }).then(result=>{
             return new Promise((resolve, reject) => {
                 this.pokemonWeaknessCore.get({
-                    pokemon_id: paramValues.pokemon_id
+                    pokemon_id: paramValues.value.pokemon_id
                 }).then(result => {
                     resolve(result)
                 }).catch(error => {
@@ -144,7 +161,6 @@ class PokemonWeaknessRoute {
                 data: returnData
             })
         }).catch(error=>{
-            console.log(error)
             return res.status(400).json(error)
         })
     };

@@ -147,15 +147,9 @@
             "produces":[
                "application/json"
             ],
-            "parameters":[
-               {
-                  "name":"token",
-                  "in":"formData",
-                  "description": "Enter your access token",
-                  "type":"string",
-                  "required": true
-               }
-            ],
+            "security": {
+                "Bearer": []
+            },
             "responses":{
                "200":{
                   "description":"OK",
