@@ -106,14 +106,10 @@
             "produces": [
                 "application/json"
             ],
+            "security": {
+                "Bearer": []
+            },
             "parameters": [
-                {
-                    "name": "token",
-                    "in": "formData",
-                    "description": "Authentication token",
-                    "type": "string",
-                    "required": true
-                },
                 {
                     "name": "name",
                     "in": "formData",
@@ -199,14 +195,10 @@
             "produces": [
                 "application/json"
             ],
+            "security": {
+                "Bearer": []
+            },
             "parameters": [
-                {
-                    "name": "token",
-                    "in": "formData",
-                    "description": "Authentication token",
-                    "required": true,
-                    "type": "string"
-                },
                 {
                     "name": "id",
                     "in": "formData",

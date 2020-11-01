@@ -242,17 +242,34 @@ class PokemonRoute {
     };
 
     update(req, res, next) {
-        const {error: paramError, value: paramValues} = Joi.validate(req.body, Joi.object().keys({
-            token: Joi.string().required(),
-            id: Joi.number().integer().required(),
-            name: Joi.string().regex(/[a-zA-Z]/),
-            stage: Joi.number().integer().valid(0, 1, 2, 3),
-            of_basic: Joi.number().integer(),
-            height: Joi.number().integer(),
-            weight: Joi.number().integer(),
-            gender: Joi.number().integer().valid(1, 2, 3),
-            status: Joi.number().integer().valid(0, 1),
-        }).unknown());
+        const authorizationToken = req.headers.authorization ? req.headers.authorization.replace("Bearer ", "") : '';
+
+        if(!authorizationToken) {
+            return  res.status(400).json(ErrorParser.handleAuthenticationError("Authorization token is missing"))
+        }
+
+        const {error: paramError, value: paramValues} = Joi.validate(
+            {
+                token: authorizationToken,
+                value: req.body
+                
+            }, 
+            {
+                token: Joi.string().required(),
+                value: Joi.object().keys(
+                    {
+                        id: Joi.number().integer().required(),
+                        name: Joi.string().regex(/[a-zA-Z]/),
+                        stage: Joi.number().integer().valid(0, 1, 2, 3),
+                        of_basic: Joi.number().integer(),
+                        height: Joi.number().integer(),
+                        weight: Joi.number().integer(),
+                        gender: Joi.number().integer().valid(1, 2, 3),
+                        status: Joi.number().integer().valid(0, 1),
+                    }
+                ).unknown()
+            }
+        );
         
         let returnData;
         let values= {};
@@ -264,6 +281,7 @@ class PokemonRoute {
         this.redisCore.getRedisToken({
             token: paramValues.token
         }).then(result => {
+            console.log(284, result)
             if(!result) {
                 return new Promise((resolve, reject) => {
                     return reject({
@@ -295,7 +313,7 @@ class PokemonRoute {
             }
 
             return this.pokemonCore.get({
-                id: paramValues.id
+                id: paramValues.value.id
             })
         }).then(result => {
             let pokemonNeedUpdate = result;
@@ -306,90 +324,89 @@ class PokemonRoute {
                         error: `Pokemon with id = ${paramValues.id} is not found`
                     })
                 })
-            }
-            values.weight = paramValues.weight ? paramValues.weight : pokemonNeedUpdate[0].weight
-            values.height = paramValues.height ? paramValues.height : pokemonNeedUpdate[0].height
-            values.gender = paramValues.gender ? paramValues.gender : pokemonNeedUpdate[0].gender
-            values.status = paramValues.status ? paramValues.status : pokemonNeedUpdate[0].status
-
-            values.stage = paramValues.stage ? paramValues.stage : pokemonNeedUpdate[0].stage
-
-            if(paramValues.name && paramValues.name !== pokemonNeedUpdate[0].name) {
+            };
+            if(paramValues.value.weight) {
+                values.weight = paramValues.value.weight
+            };
+            if(paramValues.value.height) {
+                values.height = paramValues.value.height
+            };
+            if(paramValues.value.gender) {
+                values.gender = paramValues.value.gender
+            };
+            if(paramValues.value.status) {
+                values.status = paramValues.value.status
+            };
+            if(paramValues.value.stage && paramValues.value.stage !== pokemonNeedUpdate[0].stage) {
+                if(paramValues.value.stage === dataConstant.STAGE_BASIC) {
+                    values.stage = paramValues.value.stage
+                    values.of_basic = paramValues.value.id
+                    values.tag = paramValues.value.id
+                } else {
+                    if(!paramValues.value.of_basic) {
+                        return new Promise((resolve, reject) => {
+                            return reject({
+                                code: responseCode.ERROR,
+                                error: `of_basic cannot be empty if stage = ${paramValues.value.stage}`
+                            })
+                        })
+                    } else {
+                        return new Promise((resolve, reject)=>{
+                            this.pokemonCore.get({
+                                id: paramValues.value.of_basic
+                            }).then(result=>{
+                                if(!result.length) {
+                                    return new Promise((resolve, reject) => {
+                                        return reject({
+                                            code: responseCode.ERR_DATA_NOT_FOUND,
+                                            error: `Pokemon of_basic '${paramValues.value.of_basic}' not found`
+                                        })
+                                    })
+                                }
+            
+                                if(result.length && result[0].stage !== dataConstant.STAGE_BASIC) {
+                                    return new Promise((resolve, reject) => {
+                                        return reject({
+                                            code: responseCode.ERR_DATA_NOT_FOUND,
+                                            error: `of_basic '${paramValues.value.of_basic}' given is not basic pokemon`
+                                        })
+                                    })
+                                }
+                                values.stage = paramValues.value.stage;
+                                values.of_basic = paramValues.value.of_basic;
+                                values.tag = paramValues.value.of_basic;
+                                resolve(result)
+                            }).catch(error=>{
+                                reject(error)
+                            })
+                        })
+                    };
+                };
+            };
+            if(paramValues.value.name && paramValues.value.name !== pokemonNeedUpdate[0].name) {
                 return new Promise((resolve, reject)=>{
                     this.pokemonCore.getByName({
-                        name: paramValues.name
+                        name: paramValues.value.name
                     }).then(result=>{
-                        if(result.length && result[0].id !== paramValues.id) {
+                        if(result.length && result[0].id !== paramValues.value.id) {
                             return new Promise((resolve, reject)=>{
                                 return reject ({
                                     code: responseCode.ERROR,
-                                    error: `Pokemon's name ${paramValues.name} was taken.`
+                                    error: `Pokemon's name ${paramValues.value.name} was taken.`
                                 })
                             })
                         }
-                        values.name = paramValues.name;
+                        values.name = paramValues.value.name;
                         resolve(result);
                     }).catch(error=>{
                         reject(error)
                     })
                 })
-            }
-
-            if(values.stage === dataConstant.STAGE_BASIC) {
-                if(paramValues.of_basic && paramValues.of_basic !== paramValues.id) {
-                    return new Promise((resolve, reject) => {
-                        return reject({
-                            code: responseCode.ERROR,
-                            error: `Pokemon id = ${paramValues.id} currently have stage = ${values.stage}, of_basic must be leave empty or equal to ${paramValues.id}`
-                        })
-                    })
-                }
-                values.of_basic = paramValues.id
-                values.tag = paramValues.id
-            }
-            if(values.stage !== dataConstant.STAGE_BASIC) {
-                if(!paramValues.of_basic) {
-                    return new Promise((resolve, reject) => {
-                        return reject({
-                            code: responseCode.ERROR,
-                            error: `of_basic cannot be empty if stage = ${paramValues.stage}`
-                        })
-                    })
-                }
-
-                return new Promise((resolve, reject)=>{
-                    this.pokemonCore.get({
-                        id: paramValues.of_basic
-                    }).then(result=>{
-                        if(!result.length) {
-                            return new Promise((resolve, reject) => {
-                                return reject({
-                                    code: responseCode.ERR_DATA_NOT_FOUND,
-                                    error: `Pokemon of_basic '${paramValues.of_basic}' not found`
-                                })
-                            })
-                        }
-    
-                        if(result.length && result[0].stage !== dataConstant.STAGE_ONE) {
-                            return new Promise((resolve, reject) => {
-                                return reject({
-                                    code: responseCode.ERR_DATA_NOT_FOUND,
-                                    error: `of_basic '${paramValues.of_basic}' given is not basic pokemon`
-                                })
-                            })
-                        }
-                        values.of_basic = paramValues.of_basic;
-                        values.tag = paramValues.of_basic;
-                        resolve(result)
-                    }).catch(error=>{
-                        reject(error)
-                    })
-                })
-            }
+            };
         }).then(result=>{
             return new Promise((resolve, reject) => {
                 this.pokemonCore.update({
-                    id: paramValues.id,
+                    id: paramValues.value.id,
                     values: values
                 }).then(result => {
                     resolve(result)
@@ -400,7 +417,7 @@ class PokemonRoute {
         }).then(result=>{
             return new Promise((resolve, reject) => {
                 this.pokemonCore.get({
-                    id: paramValues.id
+                    id: paramValues.value.id
                 }).then(result => {
                     resolve(result)
                 }).catch(error => {
@@ -414,6 +431,7 @@ class PokemonRoute {
                 data: returnData
             })
         }).catch(error=>{
+            console.log(error)
             return res.status(400).json(error)
         })
     };

@@ -8,7 +8,6 @@ import HelloRoute from './hello_route';
 import AuthenticationRoute from './authenticationRoute';
 import PokemonRoute from './pokemonRoute';
 import PropertiesRoute from './propertiesRoute';
-import PokemonPropertiesRoute from './pokemonPropertiesRoute';
 import PokemonTypeRoute from './pokemonTypeRoute';
 import PokemonWeaknessRoute from './pokemonWeaknessRoute';
 import PokemonAbilityRoute from './pokemonAbilityRoute';
@@ -23,7 +22,6 @@ class AppRoute {
         this.authenticationRoute = new AuthenticationRoute(); 
         this.pokemonRoute = new PokemonRoute(); 
         this.propertiesRoute = new PropertiesRoute(); 
-        this.pokemonPropertiesRoute = new PokemonPropertiesRoute(); 
         this.pokemonTypeRoute = new PokemonTypeRoute();
         this.pokemonWeaknessRoute = new PokemonWeaknessRoute();
         this.pokemonAbilityRoute = new PokemonAbilityRoute();
@@ -50,7 +48,6 @@ class AppRoute {
         this.express.use('/authentication', this.authenticationRoute.router);
         this.express.use('/pokemon', this.pokemonRoute.router);
         this.express.use('/properties', this.propertiesRoute.router);
-        this.express.use('/product-properties', this.pokemonPropertiesRoute.router);
         this.express.use('/pokemon-type', this.pokemonTypeRoute.router);
         this.express.use('/pokemon-weakness', this.pokemonWeaknessRoute.router);
         this.express.use('/pokemon-ability', this.pokemonAbilityRoute.router);
