@@ -281,7 +281,6 @@ class PokemonRoute {
         this.redisCore.getRedisToken({
             token: paramValues.token
         }).then(result => {
-            console.log(284, result)
             if(!result) {
                 return new Promise((resolve, reject) => {
                     return reject({
@@ -334,7 +333,7 @@ class PokemonRoute {
             if(paramValues.value.gender) {
                 values.gender = paramValues.value.gender
             };
-            if(paramValues.value.status) {
+            if(paramValues.value.status !== null) {
                 values.status = paramValues.value.status
             };
             if(paramValues.value.stage && paramValues.value.stage !== pokemonNeedUpdate[0].stage) {
