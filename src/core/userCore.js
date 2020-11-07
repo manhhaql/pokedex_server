@@ -21,8 +21,8 @@ class UserCore {
                 if(options.username !== undefined) {
                     whereData.push(options.username)
                 };
-                if(options.user_id !== undefined) {
-                    whereData.push(options.user_id)
+                if(options.id !== undefined) {
+                    whereData.push(options.id)
                 };
 
                 let query = 'SELECT id, username, password, salt, type, status, created_at, updated_at FROM users';
@@ -34,7 +34,7 @@ class UserCore {
                         query += `${includeAnd ? ' AND' : ''} username = ?`,
                         includeAnd = true
                     };
-                    if(options.user_id !== undefined) {
+                    if(options.id !== undefined) {
                         query += `${includeAnd ? ' AND' : ''} id = ?`,
                         includeAnd = true
                     };
@@ -66,11 +66,17 @@ class UserCore {
                 if(options.username !== undefined) {
                     whereData.push(options.username)
                 };
+                if(options.id !== undefined) {
+                    whereData.push(options.id)
+                };
                 if(options.type !== undefined) {
                     whereData.push(options.type)
                 };
+                if(options.status !== undefined) {
+                    whereData.push(options.status)
+                };
                 
-                let query = 'SELECT id, username, phone, email, avatar, type, status, created_at, updated_at FROM users';
+                let query = 'SELECT id, username, email, avatar, type, status, created_at, updated_at FROM users';
 
                 if(whereData.length) {
                     query += ' WHERE'
@@ -79,15 +85,25 @@ class UserCore {
                         query += `${includeAnd ? ' AND' : ''} username like "%"?"%"`,
                         includeAnd = true
                     };
+                    if(options.id !== undefined) {
+                        query += `${includeAnd ? ' AND' : ''} id = ?`,
+                        includeAnd = true
+                    };
                     if(options.type !== undefined) {
                         query += `${includeAnd ? ' AND' : ''} type = ?`,
                         includeAnd = true
                     };
+                    if(options.status !== undefined) {
+                        query += `${includeAnd ? ' AND' : ''} status = ?`,
+                        includeAnd = true
+                    };
                 };
-                
+                if(options.limit !== undefined && options.page !== undefined) {
+                    query += ' LIMIT ? OFFSET ?'
+                }
                 connection.query(
                     query,
-                    whereData.concat([]),
+                    whereData.concat(options.limit !== undefined && options.page !== undefined ? [options.limit, (options.page - 1) * options.limit] : []),
                     (error, result, fields)=>{
                         connection.destroy();
                         if(error) {
@@ -98,6 +114,29 @@ class UserCore {
                 )
             })
         })
+    };
+
+    countTotal(options) {
+        return new Promise((resolve, reject) => {
+            MysqlManager.pool.getConnection((error, connection) => {
+                if (error) {
+                    return reject(ErrorParser.handleMysqlError(error));
+                }
+                let query = 'SELECT COUNT(id) AS total FROM users';
+
+                connection.query(
+                    query,
+                    options,
+                    (error, result, fields)=>{
+                        connection.destroy();
+                        if(error) {
+                            return reject(ErrorParser.handleMysqlError(error))
+                        }
+                        resolve(result);
+                    }
+                )
+            });
+        });
     };
     
     create(options) {
@@ -129,8 +168,8 @@ class UserCore {
                 }
                 
                 let whereData = [];
-                if(options.conditions.user_id !== undefined) {
-                    whereData.push(options.conditions.user_id)
+                if(options.id !== undefined) {
+                    whereData.push(options.id)
                 };
 
                 let query = 'UPDATE users SET ?'
@@ -138,7 +177,7 @@ class UserCore {
                 if(whereData.length) {
                     query += ' WHERE'
                     let includeAnd = false
-                    if(options.conditions.user_id !== undefined) {
+                    if(options.id !== undefined) {
                         query += `${includeAnd ? ' AND' : ''} id = ?`,
                         includeAnd = true
                     };

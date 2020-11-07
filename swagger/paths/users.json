@@ -43,6 +43,174 @@
             }
         }
     },
+    "list": {
+        "get":{
+            "tags":[
+               "users"
+            ],
+            "summary":"User API",
+            "description":"",
+            "operationId":"user-list",
+            "consumes":[
+               "multipart/form-data"
+            ],
+            "produces":[
+               "application/json"
+            ],
+            "security": {
+                "Bearer": []
+            },
+            "parameters":[
+                {
+                    "name": "username",
+                    "in": "query",
+                    "description": "user's name",
+                    "type": "string",
+                    "required": false
+                },
+                {
+                    "name": "id",
+                    "in": "query",
+                    "description": "user's id",
+                    "type": "integer",
+                    "format": "int32",
+                    "required": false
+                },
+                {
+                    "name": "type",
+                    "in": "query",
+                    "description": "user's type; 1:admin, 2: guest",
+                    "type": "integer",
+                    "format": "int32",
+                    "required": false
+                },
+                {
+                    "name": "status",
+                    "in": "query",
+                    "description": "user's status; 0:active, 1: inactive",
+                    "type": "integer",
+                    "format": "int32",
+                    "required": false
+                },
+                {
+                    "name": "page",
+                    "in": "query",
+                    "description": "page",
+                    "required": false,
+                    "type": "integer",
+                    "format": "int32"
+                },
+                {
+                    "name": "limit",
+                    "in": "query",
+                    "description": "limit, max 500",
+                    "required": false,
+                    "type": "integer",
+                    "format": "int32"
+                }
+            ],
+            "responses":{
+               "200":{
+                  "description":"OK",
+                  "schema":{
+                    "properties": {
+                        "code": {
+                            "$ref": "../definitions/common.json#/StatusCode"
+                        },
+                        "error": {
+                            "$ref": "../definitions/common.json#/ErrorObject"
+                        },
+                        "data": {
+                            "$ref": "#/definitions/Hello"
+                        }
+                    }
+                  }
+               },
+               "400":{
+                  "description":"Invalid input value"
+               },
+               "404":{
+                  "description":"Data not found"
+               }
+            }
+        }
+    },
+    "update": {
+        "put":{
+            "tags":[
+               "users"
+            ],
+            "summary":"User API",
+            "description":"",
+            "operationId":"user-update",
+            "consumes":[
+               "multipart/x-www-form-urlencoded"
+            ],
+            "produces":[
+               "application/json"
+            ],
+            "security": {
+                "Bearer": []
+            },
+            "parameters":[
+                {
+                    "name": "id",
+                    "in": "formData",
+                    "description": "user's id",
+                    "type": "integer",
+                    "format": "int32",
+                    "required": true
+                },
+                {
+                    "name": "username",
+                    "in": "formData",
+                    "description": "user's name",
+                    "type": "string",
+                    "required": false
+                },
+                {
+                    "name": "type",
+                    "in": "formData",
+                    "description": "user's type; 1:admin, 2: guest",
+                    "type": "integer",
+                    "format": "int32",
+                    "required": false
+                },
+                {
+                    "name": "status",
+                    "in": "formData",
+                    "description": "user's status; 0:active, 1: inactive",
+                    "type": "integer",
+                    "format": "int32",
+                    "required": false
+                }
+            ],
+            "responses":{
+               "200":{
+                  "description":"OK",
+                  "schema":{
+                    "properties": {
+                        "code": {
+                            "$ref": "../definitions/common.json#/StatusCode"
+                        },
+                        "error": {
+                            "$ref": "../definitions/common.json#/ErrorObject"
+                        },
+                        "data": {
+                            "$ref": "#/definitions/Hello"
+                        }
+                    }
+                  }
+               },
+               "400":{
+                  "description":"Invalid input value"
+               },
+               "404":{
+                  "description":"Data not found"
+               }
+            }
+        }
+    },
     "definitions": {
         "Hello": {
             "type": "string",

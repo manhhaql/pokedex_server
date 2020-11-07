@@ -139,7 +139,7 @@ class PokemonImageRoute {
             }
 
             return this.pokemonImageCore.get({
-                pokemon_id: paramValues.pokemon_id
+                pokemon_id: paramValues.value.pokemon_id
             })
         }).then((result)=>{
             if (result.length) {
@@ -150,14 +150,13 @@ class PokemonImageRoute {
                     });
                 });
             }
-
-            return uploadImageToStorage(selectedFile, paramValues.pokemon_id)
+            return uploadImageToStorage(selectedFile, paramValues.value.pokemon_id)
         }).then((result)=>{
 
             url = result;
             return new Promise((resolve, reject)=>{
                 this.pokemonImageCore.saveImageToDB({
-                    pokemon_id: paramValues.pokemon_id,
+                    pokemon_id: paramValues.value.pokemon_id,
                     url: url
                 }).then((result)=>{
                     resolve(result)
@@ -169,7 +168,7 @@ class PokemonImageRoute {
             return res.status(200).json({
                 code: responseCode.SUCCESS,
                 data: {
-                    pokemon_id: paramValues.pokemon_id,
+                    pokemon_id: paramValues.value.pokemon_id,
                     url: url
                 }
             });
@@ -213,6 +212,8 @@ class PokemonImageRoute {
 
         let selectedFile = req.files.file[0];
         let url;
+
+        
 
         if (!selectedFile.mimetype.includes(fileConstant.FILE_TYPE_IMAGE)) {
             let error = {
@@ -292,6 +293,7 @@ class PokemonImageRoute {
                 }
             });
         }).catch((error)=>{
+            console.log(error)
             return res.status(400).json(error)
         });
     };
@@ -324,7 +326,7 @@ class PokemonImageRoute {
 
     routes() {
         this.router.post('/upload', multer.fields([{ name: 'file', maxCount: 1 }]), this.upload.bind(this));
-        this.router.put('/update', multer.fields([{ name: 'file', maxCount: 1 }]), this.update.bind(this));
+        this.router.post('/update', multer.fields([{ name: 'file', maxCount: 1 }]), this.update.bind(this));
         this.router.get('/list', this.list.bind(this));
     };
 };

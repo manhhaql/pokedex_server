@@ -130,6 +130,12 @@
         },
         "/users/user-info": {
             "$ref":"paths/users.json#/user-info"
+        },
+        "/users": {
+            "$ref":"paths/users.json#/list"
+        },
+        "/users/update": {
+            "$ref":"paths/users.json#/update"
         }
     }
 }

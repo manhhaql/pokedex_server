@@ -132,7 +132,7 @@ class PokemonWeaknessRoute {
                 pokemon_id: paramValues.value.pokemon_id
             })
         }).then(results => {
-            return Promise.all(weaknessData.map((weakness_id)=>{
+            return Promise.all(paramValues.value.weakness.map((weakness_id)=>{
                 return new Promise((resolve, reject)=>{
                     this.pokemonWeaknessCore.set({
                         pokemon_id: paramValues.value.pokemon_id,
