@@ -192,7 +192,7 @@ class UserRoute {
         if(paramValues.value.type) {
             values.type = paramValues.value.type
         }
-        if(paramValues.value.status !== null) {
+        if(paramValues.value.status) {
             values.status = paramValues.value.status
         }
         if(paramValues.value.username) {
