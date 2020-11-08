@@ -51,7 +51,7 @@ class PokemonCore {
                                     (SELECT JSON_ARRAYAGG(pokemon_ability.ability_id) 
                                         FROM pokemon_ability 
                                         WHERE pokemon_ability.pokemon_id = pokemon.id 
-                                        GROUP BY pokemon_ability.pokemon_id) as abilities,
+                                        GROUP BY pokemon_ability.pokemon_id) as ability,
                                     (SELECT pokemon_image.url
                                         FROM pokemon_image
                                         WHERE pokemon_image.pokemon_id = pokemon.id 

@@ -56,16 +56,30 @@ class PokemonRoute {
         }).then((result) => {
             returnData = result
             return Promise.all(returnData.map((data) => {
-                return this.pokemonCore.get({
-                    id: data.of_basic
-                })
+                return Promise.all([
+                    this.pokemonCore.get({
+                        id: data.of_basic
+                    }),
+                    this.pokemonAbilityCore.get({
+                        pokemon_id: data.id
+                    })
+                ])
             }))
         }).then((result) => {
             for(let i=0;i<result.length;i++) {
-                returnData[i].of_basic = result[i][0] ? {
-                    id: result[i][0].id,
-                    name: result[i][0].name
-                } : null;
+                returnData[i].of_basic = result[i][0].map((a=>{
+                    return {
+                        id: a.id,
+                        name: a.name,
+                    }
+                }))[0]
+                returnData[i].abilities = result[i][1].map((ability) => {
+                    return {
+                        id: ability.ability_id,
+                        name: ability.ability_name,
+                        description: ability.ability_description,
+                    }
+                })
             }
         }).then((result) => {
             return this.pokemonCore.countTotal({})

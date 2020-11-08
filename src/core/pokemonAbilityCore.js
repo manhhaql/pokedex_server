@@ -21,7 +21,7 @@ class PokemonAbilityCore {
                 if (options.ability_id !== undefined) {
                     whereData.push(options.ability_id);
                 }
-                let query = 'SELECT pokemon_ability.id, pokemon_ability.pokemon_id, ability.id as ability_id, ability.name as ability_name, pokemon_ability.created_at, pokemon_ability.updated_at FROM pokemon_ability';
+                let query = 'SELECT pokemon_ability.id, pokemon_ability.pokemon_id, ability.id as ability_id, ability.name as ability_name, ability.description as ability_description, pokemon_ability.created_at, pokemon_ability.updated_at FROM pokemon_ability';
                 query += ` LEFT JOIN ability on pokemon_ability.ability_id = ability.id`
                 if (whereData.length) {
                     query += ' WHERE';
