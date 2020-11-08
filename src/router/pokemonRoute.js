@@ -279,7 +279,7 @@ class PokemonRoute {
                         height: Joi.number().integer(),
                         weight: Joi.number().integer(),
                         gender: Joi.number().integer().valid(1, 2, 3),
-                        status: Joi.number().integer().valid(0, 1),
+                        status: Joi.number().integer().valid(1, 2),
                     }
                 ).unknown()
             }

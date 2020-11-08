@@ -10,5 +10,5 @@ export const STAGE_MEGA = 3;
 export const USER_ADMIN = 1;
 export const USER_GUEST = 2;
 
-export const STATUS_ACTIVE = 0;
-export const STATUS_INACTIVE = 1;
+export const STATUS_ACTIVE = 1;
+export const STATUS_INACTIVE = 2;

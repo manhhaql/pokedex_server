@@ -92,7 +92,7 @@ class UserRoute {
                         username: Joi.string().regex(/^[a-zA-Z0-9, ]*$/),
                         id: Joi.number().integer().positive(),
                         type: Joi.number().integer().valid(1, 2),
-                        status: Joi.number().integer().valid(0, 1),
+                        status: Joi.number().integer().valid(1, 2),
                     }
                 ).unknown()
             }
@@ -178,7 +178,7 @@ class UserRoute {
                         id: Joi.number().integer().positive().required(),
                         username: Joi.string().regex(/^[a-zA-Z0-9, ]*$/),
                         type: Joi.number().integer().valid(1, 2),
-                        status: Joi.number().integer().valid(0, 1),
+                        status: Joi.number().integer().valid(1, 2),
                     }
                 ).unknown()
             }
