@@ -254,8 +254,8 @@
                     "name": "height",
                     "in": "formData",
                     "description": "height (inch)",
-                    "type": "integer",
-                    "format": "int32"
+                    "type": "number",
+                    "format": "float"
                 },
                 {
                     "name": "weight",
