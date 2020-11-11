@@ -5,6 +5,7 @@ class PokemonCore {
     constructor() {
         this.get = this.get.bind(this);
         this.getByName = this.getByName.bind(this);
+        this.getLastId = this.getLastId.bind(this);
         this.create = this.create.bind(this);
         this.update = this.update.bind(this);
     };
@@ -89,7 +90,9 @@ class PokemonCore {
                 }
 
                 query += ` GROUP BY pokemon.id`
-
+                if(options.descending_by_id) {
+                    query+= " ORDER BY pokemon.id DESC"
+                }
                 if(options.limit !== undefined && options.page !== undefined) {
                     query += ' LIMIT ? OFFSET ?'
                 }
@@ -170,6 +173,28 @@ class PokemonCore {
         });
     };
 
+    getLastId() {
+        return new Promise((resolve, reject) => {
+            MysqlManager.pool.getConnection((error, connection) => {
+                if (error) {
+                    return reject(ErrorParser.handleMysqlError(error));
+                }
+                let query = 'SELECT id FROM pokemon ORDER BY id DESC LIMIT 1;';
+
+                connection.query(
+                    query,
+                    (error, result, fields)=>{
+                        connection.destroy();
+                        if(error) {
+                            return reject(ErrorParser.handleMysqlError(error))
+                        }
+                        resolve(result);
+                    }
+                )
+            });
+        });
+    };
+
     create(options) {
         return new Promise((resolve, reject) => {
             MysqlManager.pool.getConnection((error, connection) => {
@@ -202,10 +227,12 @@ class PokemonCore {
                 }
 
                 let whereData = [];
-                let query = 'UPDATE pokemon SET ?';
                 if (options.id !== undefined) {
                     whereData.push(options.id);
                 }
+
+                let query = 'UPDATE pokemon SET ?';
+
                 if (whereData.length) {
                     query += ' WHERE';
                     let includeAnd = false;

@@ -144,8 +144,8 @@
                     "name": "weight",
                     "in": "formData",
                     "description": "weight (lbs)",
-                    "type": "integer",
-                    "format": "int32"
+                    "type": "number",
+                    "format": "float"
                 },
                 {
                     "name": "gender",
@@ -153,6 +153,27 @@
                     "description": "For gender, 1: male, 2: female, 3: both",
                     "type": "integer",
                     "format": "int32"
+                },
+                {
+                    "name": "types",
+                    "in": "formData",
+                    "description": "pokemon's types; example: [1, 2]",
+                    "type": "array",
+                    "required": false
+                },
+                {
+                    "name": "weakness",
+                    "in": "formData",
+                    "description": "pokemon's weakness; example: [1, 2]",
+                    "type": "array",
+                    "required": false
+                },
+                {
+                    "name": "abilities",
+                    "in": "formData",
+                    "description": "pokemon's abilities; example: [1, 2]",
+                    "type": "array",
+                    "required": false
                 }
             ],
             "responses": {

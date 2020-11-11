@@ -71,9 +71,10 @@ class AuthenticationRoute {
             })
         }).then(result => {
             return this.userCore.getBy({
-                user_id: result.insertId
+                id: result.insertId
             })
         }).then(result => {
+            console.log(78, result)
             authData.user = result[0];
             return this.authenticationCore.createSession({
                 token: authData.token,
