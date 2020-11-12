@@ -23,6 +23,9 @@ class PokemonCore {
                 if (options.name !== undefined) {
                     whereData.push(options.name);
                 }
+                if (options.tag !== undefined) {
+                    whereData.push(options.tag);
+                }
                 if (options.type_id !== undefined) {
                     whereData.push(options.type_id);
                 }
@@ -73,6 +76,10 @@ class PokemonCore {
                     }
                     if (options.name !== undefined) {
                         query += `${includeAnd ? ' AND' : ''} pokemon.name like "%"?"%"`;
+                        includeAnd = true;
+                    }
+                    if (options.tag !== undefined) {
+                        query += `${includeAnd ? ' AND' : ''} pokemon.tag = ?`;
                         includeAnd = true;
                     }
                     if (options.type_id !== undefined) {

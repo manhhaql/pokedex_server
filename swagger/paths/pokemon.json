@@ -19,51 +19,63 @@
                     "in": "query",
                     "description": "Pokemon id",
                     "type": "integer",
-                    "format": "int32"
+                    "format": "int32",
+                    "required": false
                 },
                 {
                     "name": "name",
                     "in": "query",
                     "description": "Pokemon name",
-                    "required": false,
-                    "type": "string"
+                    "type": "string",
+                    "required": false
+                },
+                {
+                    "name": "tag",
+                    "in": "query",
+                    "description": "Pokemon tag",
+                    "type": "integer",
+                    "format": "int32",
+                    "required": false
                 },
                 {
                     "name": "type_id",
                     "in": "query",
                     "description": "Pokemon's type",
                     "type": "integer",
-                    "format": "int32"
+                    "format": "int32",
+                    "required": false
                 },
                 {
                     "name": "weakness_id",
                     "in": "query",
                     "description": "Pokemon's weakness",
                     "type": "integer",
-                    "format": "int32"
+                    "format": "int32",
+                    "required": false
                 },
                 {
                     "name": "ability_id",
                     "in": "query",
                     "description": "Pokemon's ability",
                     "type": "integer",
-                    "format": "int32"
+                    "format": "int32",
+                    "required": false
                 },
                 {
                     "name": "page",
                     "in": "query",
                     "description": "page",
-                    "required": false,
                     "type": "integer",
-                    "format": "int32"
+                    "format": "int32",
+                    "required": false
                 },
                 {
                     "name": "limit",
                     "in": "query",
                     "description": "limit, max 500",
-                    "required": false,
                     "type": "integer",
-                    "format": "int32"
+                    "format": "int32",
+                    "required": false
                 }
             ],
             "responses": {

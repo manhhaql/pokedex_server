@@ -33,6 +33,7 @@ class PokemonRoute {
         const {error: paramError, value: paramValues} = Joi.validate(req.query, Joi.object().keys({
             id: Joi.number().integer().min(1),
             name: Joi.string(),
+            tag: Joi.number().integer().min(1),
             type_id: Joi.number().integer().min(1),
             weakness_id: Joi.number().integer().min(1),
             ability_id: Joi.number().integer().min(1),
@@ -51,6 +52,7 @@ class PokemonRoute {
         this.pokemonCore.get({
             id: paramValues.id,
             name: paramValues.name,
+            tag: paramValues.tag,
             type_id: paramValues.type_id,
             weakness_id: paramValues.weakness_id,
             ability_id: paramValues.ability_id,
