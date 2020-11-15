@@ -1,6 +1,6 @@
 import Express, { response } from 'express';
 import Joi from 'joi';
-import UUIDV4 from 'uuid/dist/v4';
+import {v4 as UUIDV4} from 'uuid';
 
 import * as responseCode from '../constant/responseCode';
 
