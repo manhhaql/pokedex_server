@@ -14,9 +14,7 @@ var _joi = require('joi');
 
 var _joi2 = _interopRequireDefault(_joi);
 
-var _v = require('uuid/dist/v4');
-
-var _v2 = _interopRequireDefault(_v);
+var _uuid = require('uuid');
 
 var _responseCode = require('../constant/responseCode');
 
@@ -105,7 +103,7 @@ var AuthenticationRoute = function () {
                     });
                 }
 
-                authData.token = (0, _v2.default)();
+                authData.token = (0, _uuid.v4)();
 
                 return _this.userCore.create({
                     type: paramValues.type,
@@ -169,7 +167,7 @@ var AuthenticationRoute = function () {
                     });
                 }
 
-                authData.token = (0, _v2.default)();
+                authData.token = (0, _uuid.v4)();
                 authData.user = result[0];
 
                 return new Promise(function (resolve, reject) {
