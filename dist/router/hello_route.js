@@ -54,7 +54,6 @@ var HelloRoute = function () {
             if (paramError) {
                 return res.status(400).json(_errorParser2.default.handleJoiError(paramError));
             }
-
             this.helloCore.sayHello({
                 name: paramValues.name
             }).then(function (result) {
@@ -63,6 +62,7 @@ var HelloRoute = function () {
                     data: result
                 });
             }).catch(function (error) {
+                console.log(error);
                 return res.status(400).json(error);
             });
         }

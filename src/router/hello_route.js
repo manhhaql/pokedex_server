@@ -22,7 +22,6 @@ class HelloRoute {
         if(paramError) {
             return res.status(400).json(ErrorParser.handleJoiError(paramError))
         }
-
         this.helloCore.sayHello({
             name: paramValues.name
         }).then((result) => {
@@ -31,6 +30,7 @@ class HelloRoute {
                 data: result
             })
         }).catch((error) => {
+            console.log(error)
             return res.status(400).json(error)
         })
     };
