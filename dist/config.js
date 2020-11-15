@@ -10,11 +10,11 @@ exports.default = {
         protocol: "http"
     },
     mysql: {
-        host: "127.0.0.1",
-        port: "3366",
-        user: "hanm",
-        password: "naruto3010",
-        database: "pokedex",
+        host: "us-cdbr-east-02.cleardb.com",
+        port: "3306",
+        user: "b4c93a290fd4bd",
+        password: "4b57bfca",
+        database: "heroku_2678020e15da692",
         connectionLimit: 100
     },
     redis: {
