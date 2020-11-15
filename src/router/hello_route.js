@@ -15,6 +15,7 @@ class HelloRoute {
     };
 
     hello(req, res, next) {
+        console.log(process.env)
         const {error: paramError, value: paramValues} = Joi.validate(req.query, Joi.object().keys({
             name: Joi.string().min(2).max(10)
         }).unknown());
