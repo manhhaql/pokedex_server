@@ -4,13 +4,12 @@ import config from '../../config';
 
 class RedisManager {};
 
-RedisManager.client = Redis.createClient({
+RedisManager.client = Redis.createClient( process.env.REDISCLOUD_URL || {
     host: config.redis.host,
     port: config.redis.port,
     password: config.redis.password,
     db: config.redis.db
 });
-
 RedisManager.connected = false;
 
 RedisManager.client.on('ready', (error) => {
@@ -18,22 +17,18 @@ RedisManager.client.on('ready', (error) => {
 });
 
 RedisManager.client.on('connect', (error) => {
-    
 });
 RedisManager.client.on('reconnecting', (error) => {
-    
+    console.log(25,error)
 });
 RedisManager.client.on('connect', (error) => {
-    
 });
 RedisManager.client.on('error', (error) => {
     RedisManager.connected = false;
 });
 RedisManager.client.on('warning', (error) => {
-    
 });
 RedisManager.client.on('end', (error) => {
-    
 });
 
 export default RedisManager;
