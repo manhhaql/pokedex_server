@@ -5,7 +5,7 @@
         "title": "Pokedex API",
         "description": "API document"
     },
-    "host":"https://api-hapokedex.herokuapp.com/",
+    "host":"api-hapokedex.herokuapp.com/",
     "basePath": "/",
     "tags": [
         {
