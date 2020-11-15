@@ -19,10 +19,10 @@ var port = _config2.default.server.port;
 
 var server = _http2.default.createServer(app.express);
 
-server.listen(port);
+server.listen(process.env.PORT || port);
 server.on('error', function () {
-    console.log('Port ' + port + ' is already in use.');
+    console.log('Port ' + (process.env.PORT || port) + ' is already in use.');
 });
 server.on('listening', function () {
-    console.log('Server is listening on port ' + port + '.');
+    console.log('Server is listening on port ' + (process.env.PORT || port) + '.');
 });
