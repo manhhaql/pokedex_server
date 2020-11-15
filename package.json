@@ -1,5 +1,5 @@
 {
-  "name": "leaftee_cms_server",
+  "name": "pokedex_server",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
@@ -11,7 +11,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/manhhaql/leaftee_cms_server.git"
+    "url": "git+https://github.com/manhhaql/pokedex_server.git"
   },
   "author": "manhhaql@gmail.com",
   "license": "ISC",
@@ -33,9 +33,5 @@
     "redis": "^3.0.2",
     "request": "^2.88.2",
     "uuid": "^8.0.0"
-  },
-  "bugs": {
-    "url": "https://github.com/manhhaql/leaftee_cms_server/issues"
-  },
-  "homepage": "https://github.com/manhhaql/leaftee_cms_server#readme"
+  }
 }
