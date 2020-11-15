@@ -98,7 +98,7 @@ var AppRoute = function () {
     }, {
         key: 'routes',
         value: function routes() {
-            this.express.use('/api-docs', _express2.default.static(_path2.default.join(__dirname, '../../', '/swagger')));
+            this.express.use('/', _express2.default.static(_path2.default.join(__dirname, '../../', '/swagger')));
             this.express.use('/hello', this.helloRoute.router);
             this.express.use('/authentication', this.authenticationRoute.router);
             this.express.use('/pokemon', this.pokemonRoute.router);

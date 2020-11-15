@@ -43,7 +43,7 @@ class AppRoute {
     };
 
     routes() {
-        this.express.use('/api-docs', Express.static(Path.join(__dirname, '../../', '/swagger')));
+        this.express.use('/', Express.static(Path.join(__dirname, '../../', '/swagger')));
         this.express.use('/hello', this.helloRoute.router);
         this.express.use('/authentication', this.authenticationRoute.router);
         this.express.use('/pokemon', this.pokemonRoute.router);
