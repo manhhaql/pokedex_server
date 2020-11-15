@@ -22,13 +22,12 @@ var RedisManager = function RedisManager() {
 
 ;
 
-RedisManager.client = _redis2.default.createClient({
+RedisManager.client = _redis2.default.createClient(process.env.REDISCLOUD_URL || {
     host: _config2.default.redis.host,
     port: _config2.default.redis.port,
     password: _config2.default.redis.password,
     db: _config2.default.redis.db
 });
-
 RedisManager.connected = false;
 
 RedisManager.client.on('ready', function (error) {
@@ -36,7 +35,9 @@ RedisManager.client.on('ready', function (error) {
 });
 
 RedisManager.client.on('connect', function (error) {});
-RedisManager.client.on('reconnecting', function (error) {});
+RedisManager.client.on('reconnecting', function (error) {
+    console.log(25, error);
+});
 RedisManager.client.on('connect', function (error) {});
 RedisManager.client.on('error', function (error) {
     RedisManager.connected = false;

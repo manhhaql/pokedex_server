@@ -45,6 +45,8 @@ var HelloRoute = function () {
     _createClass(HelloRoute, [{
         key: 'hello',
         value: function hello(req, res, next) {
+            console.log(process.env);
+
             var _Joi$validate = _joi2.default.validate(req.query, _joi2.default.object().keys({
                 name: _joi2.default.string().min(2).max(10)
             }).unknown()),
