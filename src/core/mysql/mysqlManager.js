@@ -3,7 +3,7 @@ import config from '../../config';
 
 class MysqlManager {};
 
-MysqlManager.pool = mysql.createPool(process.env.CLEARDB_DATABASE_URL || {
+MysqlManager.pool = mysql.createPool(process.env.JAWSDB_URL || {
     host: config.mysql.host,
     port: config.mysql.port,
     user: config.mysql.user,

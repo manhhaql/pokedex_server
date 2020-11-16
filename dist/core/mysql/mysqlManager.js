@@ -22,7 +22,7 @@ var MysqlManager = function MysqlManager() {
 
 ;
 
-MysqlManager.pool = _mysql2.default.createPool(process.env.CLEARDB_DATABASE_URL || {
+MysqlManager.pool = _mysql2.default.createPool(process.env.JAWSDB_URL || {
     host: _config2.default.mysql.host,
     port: _config2.default.mysql.port,
     user: _config2.default.mysql.user,

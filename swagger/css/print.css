@@ -184,10 +184,10 @@
 .swagger-section .swagger-ui-wrap {
   line-height: 1;
   font-family: "Droid Sans", sans-serif;
-  min-width: 760px;
+  width: auto;
   max-width: 960px;
-  margin-left: auto;
-  margin-right: auto;
+  margin: 0 auto;
+  padding: 0 20px;
   /* JSONEditor specific styling */
 }
 .swagger-section .swagger-ui-wrap b,
