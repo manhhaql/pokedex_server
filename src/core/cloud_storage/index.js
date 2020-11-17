@@ -6,6 +6,10 @@ import config from '../../config';
 
 export const storage = new Storage({
     projectId: process.env.FIREBASE_PROJECT_ID  || config.firebase.projectId,
+    credentials: {
+        client_email: process.env.GCLOUD_CLIENT_EMAIL,
+        private_key: process.env.GCLOUD_PRIVATE_KEY.replace(/\\n/g, '\n')
+    },
     keyFilename: path.join(__dirname, '../../../ServiceAccountKey.json')
 });
 

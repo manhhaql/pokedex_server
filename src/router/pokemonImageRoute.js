@@ -199,6 +199,7 @@ class PokemonImageRoute {
             }
         );
 
+        console.log(paramValues.value)
         if(paramError) {
             return res.status(400).json(ErrorParser.handleJoiError(paramError))
         }
@@ -327,7 +328,7 @@ class PokemonImageRoute {
 
     routes() {
         this.router.post('/upload', multer.fields([{ name: 'file', maxCount: 1 }]), this.upload.bind(this));
-        this.router.post('/update', multer.fields([{ name: 'file', maxCount: 1 }]), this.update.bind(this));
+        this.router.put('/update', multer.fields([{ name: 'file', maxCount: 1 }]), this.update.bind(this));
         this.router.get('/list', this.list.bind(this));
     };
 };
