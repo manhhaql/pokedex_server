@@ -8,6 +8,7 @@ import HelloCore from '../core/hello_core';
 
 class HelloRoute {
     constructor() {
+        
         this.helloCore = new HelloCore();
 
         this.router = Express.Router();
