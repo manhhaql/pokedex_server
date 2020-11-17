@@ -400,7 +400,6 @@ class PokemonRoute {
         
         let returnData;
         let values= {};
-
         if(paramError) {
             return res.status(400).json(ErrorParser.handleJoiError(paramError))
         }
@@ -463,7 +462,7 @@ class PokemonRoute {
             if(paramValues.value.status) {
                 values.status = paramValues.value.status
             };
-            if(paramValues.value.stage !== null) {
+            if(paramValues.value.stage >= dataConstant.STAGE_BASIC) {
                 if(paramValues.value.stage === dataConstant.STAGE_BASIC) {
                     values.stage = paramValues.value.stage
                     values.of_basic = paramValues.value.id
