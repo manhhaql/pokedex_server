@@ -199,7 +199,6 @@ class PokemonImageRoute {
             }
         );
 
-        console.log(paramValues.value)
         if(paramError) {
             return res.status(400).json(ErrorParser.handleJoiError(paramError))
         }
