@@ -1,6 +1,6 @@
 import HTTP from 'http';
-import config from './config';
 import AppRoute from './router/';
+import config from './config';
 
 const app = new AppRoute();
 const port = config.server.port;
