@@ -5,7 +5,7 @@ class HelloCore {
 
     sayHello(options) {
         return new Promise((resolve, reject) => {
-            return resolve(`Hello ${options.name}`)
+            return resolve(`Hello ${options.name}!`)
         })
     };
 };
