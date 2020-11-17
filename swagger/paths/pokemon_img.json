@@ -59,7 +59,7 @@
         }
     },
     "update": {
-        "put": {
+        "post": {
             "tags": [
                 "pokemon image"
             ],
